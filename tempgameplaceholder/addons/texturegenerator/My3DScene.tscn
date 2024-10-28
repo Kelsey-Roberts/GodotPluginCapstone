@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://b0j750olrabyn"]
+
+[ext_resource type="Script" path="res://addons/texturegenerator/My3DScript.gd" id="1_hvuim"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_8lpjg"]
+size = Vector3(3, 1, 21)
+
+[node name="Root" type="Node3D"]
+transform = Transform3D(0.999998, 0.00150319, -0.00157553, -0.00150445, 0.999999, -0.00080287, 0.00157433, 0.000805228, 0.999998, 0, 0, 0)
+script = ExtResource("1_hvuim")
+
+[node name="wow" type="Node3D" parent="."]
+transform = Transform3D(1, 4.09273e-11, 0, -5.18412e-11, 1, 0, 0, -5.82077e-11, 1, 0, 0, 0)
+script = ExtResource("1_hvuim")
+
+[node name="Cube" type="MeshInstance3D" parent="wow"]
+mesh = SubResource("BoxMesh_8lpjg")
