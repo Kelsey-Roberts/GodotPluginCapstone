@@ -1,0 +1,216 @@
+[gd_scene format=3 uid="uid://dfs4i1j13tq7o"]
+
+[node name="Plugin_GUI" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Background" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Controls_VContainer" type="VBoxContainer" parent="."]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Room_Dimensions_Panel" type="Panel" parent="Controls_VContainer"]
+custom_minimum_size = Vector2(300, 95)
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="Room_Dimensions" type="VBoxContainer" parent="Controls_VContainer/Room_Dimensions_Panel"]
+custom_minimum_size = Vector2(300, 90)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+
+[node name="Description" type="Label" parent="Controls_VContainer/Room_Dimensions_Panel/Room_Dimensions"]
+layout_mode = 2
+size_flags_vertical = 0
+text = "Enter room dimensions or leave empty to randomize: "
+autowrap_mode = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Controls_VContainer/Room_Dimensions_Panel/Room_Dimensions"]
+custom_minimum_size = Vector2(300, 35)
+layout_mode = 2
+size_flags_vertical = 10
+
+[node name="X_Input" type="TextEdit" parent="Controls_VContainer/Room_Dimensions_Panel/Room_Dimensions/HBoxContainer"]
+custom_minimum_size = Vector2(140, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+placeholder_text = " X: (Random)"
+
+[node name="Y_Input" type="TextEdit" parent="Controls_VContainer/Room_Dimensions_Panel/Room_Dimensions/HBoxContainer"]
+custom_minimum_size = Vector2(140, 0)
+layout_mode = 2
+size_flags_horizontal = 8
+placeholder_text = " Y: (Random)"
+
+[node name="Roof_Panel" type="Panel" parent="Controls_VContainer"]
+custom_minimum_size = Vector2(300, 30)
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="Roof" type="HBoxContainer" parent="Controls_VContainer/Roof_Panel"]
+custom_minimum_size = Vector2(300, 30)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 4
+
+[node name="Description" type="Label" parent="Controls_VContainer/Roof_Panel/Roof"]
+layout_mode = 2
+size_flags_horizontal = 2
+size_flags_vertical = 0
+text = "Generate a roof: "
+
+[node name="Roof_Toggle_Button" type="CheckButton" parent="Controls_VContainer/Roof_Panel/Roof"]
+layout_mode = 2
+size_flags_horizontal = 10
+
+[node name="Furniture_Panel" type="Panel" parent="Controls_VContainer"]
+custom_minimum_size = Vector2(300, 100)
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="Furniture" type="VBoxContainer" parent="Controls_VContainer/Furniture_Panel"]
+custom_minimum_size = Vector2(300, 100)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+
+[node name="Description" type="Label" parent="Controls_VContainer/Furniture_Panel/Furniture"]
+layout_mode = 2
+text = "Pieces of furniture per room: 
+(Cannot exceed room area)"
+autowrap_mode = 3
+
+[node name="Furniture_Input" type="TextEdit" parent="Controls_VContainer/Furniture_Panel/Furniture"]
+custom_minimum_size = Vector2(150, 40)
+layout_mode = 2
+size_flags_horizontal = 0
+placeholder_text = " 0 (Empty)"
+
+[node name="Furniture_Drag_Drop" type="VBoxContainer" parent="Controls_VContainer"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+
+[node name="Furniture_Drag_Drop_Panel" type="Panel" parent="Controls_VContainer/Furniture_Drag_Drop"]
+custom_minimum_size = Vector2(300, 20)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+
+[node name="Description" type="Label" parent="Controls_VContainer/Furniture_Drag_Drop/Furniture_Drag_Drop_Panel"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 2
+text = "Drag and drop furniture into rooms:"
+autowrap_mode = 3
+
+[node name="Library_Grid" type="GridContainer" parent="Controls_VContainer/Furniture_Drag_Drop"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+size_flags_vertical = 10
+columns = 3
+
+[node name="Panel" type="Panel" parent="Controls_VContainer/Furniture_Drag_Drop/Library_Grid"]
+custom_minimum_size = Vector2(90, 90)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Panel2" type="Panel" parent="Controls_VContainer/Furniture_Drag_Drop/Library_Grid"]
+custom_minimum_size = Vector2(90, 90)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Panel3" type="Panel" parent="Controls_VContainer/Furniture_Drag_Drop/Library_Grid"]
+custom_minimum_size = Vector2(90, 90)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Panel4" type="Panel" parent="Controls_VContainer/Furniture_Drag_Drop/Library_Grid"]
+custom_minimum_size = Vector2(90, 90)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Panel5" type="Panel" parent="Controls_VContainer/Furniture_Drag_Drop/Library_Grid"]
+custom_minimum_size = Vector2(90, 90)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Panel6" type="Panel" parent="Controls_VContainer/Furniture_Drag_Drop/Library_Grid"]
+custom_minimum_size = Vector2(90, 90)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Panel7" type="Panel" parent="Controls_VContainer/Furniture_Drag_Drop/Library_Grid"]
+custom_minimum_size = Vector2(90, 90)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Panel8" type="Panel" parent="Controls_VContainer/Furniture_Drag_Drop/Library_Grid"]
+custom_minimum_size = Vector2(90, 90)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Panel9" type="Panel" parent="Controls_VContainer/Furniture_Drag_Drop/Library_Grid"]
+custom_minimum_size = Vector2(90, 90)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Generate_Button_Panel" type="Panel" parent="Controls_VContainer"]
+custom_minimum_size = Vector2(300, 60)
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="Generate_Button" type="Button" parent="Controls_VContainer/Generate_Button_Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Generate"
