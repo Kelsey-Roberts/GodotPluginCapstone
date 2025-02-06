@@ -2,18 +2,21 @@
 extends EditorPlugin
 
 var dock # Global Dock Location
+var delete_script
 
 
 func _enter_tree() -> void:
 	# Initialization of the plugin goes here.
 	dock = preload("res://addons/procedural_room_generator/plugin_gui.tscn").instantiate()
 	add_control_to_dock(DOCK_SLOT_LEFT_BL, dock)
+	
+	delete_script = preload("res://addons/procedural_room_generator/delete_node.gd").new()
 	# to grab controls from the dock simply right click the control and copy path
 	var generate_button = dock.get_node("Controls_VContainer/Generate_Button_Panel/Generate_Button")
 	generate_button.pressed.connect(_on_generate_button_pressed)
 	
-	
-	 
+	var delete_button = dock.get_node("Controls_VContainer/Delete_Button_Panel/Delete_Button")
+	delete_button.pressed.connect(_on_delete_button_pressed)
 
 
 func _exit_tree() -> void:
@@ -28,11 +31,14 @@ func _on_generate_button_pressed() -> void:
 	var furniture = 0
 	x_input = int((dock.get_node("Controls_VContainer/Room_Dimensions_Panel/Room_Dimensions/HBoxContainer/X_Input")).text)
 	y_input = int((dock.get_node("Controls_VContainer/Room_Dimensions_Panel/Room_Dimensions/HBoxContainer/Y_Input")).text)
-	furniture = int((dock.get_node("Controls_VContainer/Furniture_Panel/Furniture/Furniture_Input")).text)
 	var roof = bool((dock.get_node("Controls_VContainer/Roof_Panel/Roof/Roof_Toggle_Button")).button_pressed)
-	print((x_input + y_input), y_input, furniture, roof)
+	print((x_input + y_input), y_input, roof)
 	# now call the room generation script here with the above vars!
 	generate_room(x_input,y_input)
+	
+func _on_delete_button_pressed() -> void:
+	delete_script.call_deferred("delete_node_by_name", get_tree())
+
 	
 
 
