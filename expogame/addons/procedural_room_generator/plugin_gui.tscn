@@ -6,27 +6,29 @@ anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_right = -666.0
-offset_bottom = 352.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+size_flags_stretch_ratio = 0.0
 
 [node name="Background" type="TextureRect" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = -302.0
+offset_right = 4.0
 grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Controls_VContainer" type="VBoxContainer" parent="."]
 custom_minimum_size = Vector2(300, 500)
 layout_mode = 1
-anchors_preset = -1
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="Room_Dimensions_Panel" type="Panel" parent="Controls_VContainer"]
 custom_minimum_size = Vector2(300, 95)
@@ -47,30 +49,46 @@ size_flags_vertical = 4
 [node name="Description" type="Label" parent="Controls_VContainer/Room_Dimensions_Panel/Room_Dimensions"]
 layout_mode = 2
 size_flags_vertical = 0
-text = "Enter room dimensions or leave empty to randomize: "
+text = "Enter room dimensions (1-99 units) or leave empty to randomize: "
 autowrap_mode = 3
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Controls_VContainer/Room_Dimensions_Panel/Room_Dimensions"]
+[node name="HBoxContainerWidth" type="HBoxContainer" parent="Controls_VContainer/Room_Dimensions_Panel/Room_Dimensions"]
 custom_minimum_size = Vector2(300, 100)
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="X_Input" type="TextEdit" parent="Controls_VContainer/Room_Dimensions_Panel/Room_Dimensions/HBoxContainer"]
+[node name="MaxWidth" type="TextEdit" parent="Controls_VContainer/Room_Dimensions_Panel/Room_Dimensions/HBoxContainerWidth"]
 custom_minimum_size = Vector2(140, 0)
 layout_mode = 2
 size_flags_horizontal = 3
-placeholder_text = " X: (Random)"
+placeholder_text = " Max Width: (Random)"
 
-[node name="Y_Input" type="TextEdit" parent="Controls_VContainer/Room_Dimensions_Panel/Room_Dimensions/HBoxContainer"]
+[node name="MinWidth" type="TextEdit" parent="Controls_VContainer/Room_Dimensions_Panel/Room_Dimensions/HBoxContainerWidth"]
 custom_minimum_size = Vector2(140, 0)
 layout_mode = 2
 size_flags_horizontal = 3
-placeholder_text = " Y: (Random)"
+placeholder_text = "Min Width: (Random)"
+
+[node name="HBoxContainerDepth" type="HBoxContainer" parent="Controls_VContainer/Room_Dimensions_Panel/Room_Dimensions"]
+custom_minimum_size = Vector2(300, 100)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="MaxDepth" type="TextEdit" parent="Controls_VContainer/Room_Dimensions_Panel/Room_Dimensions/HBoxContainerDepth"]
+custom_minimum_size = Vector2(140, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = " Max Depth: (Random)"
+
+[node name="MinDepth" type="TextEdit" parent="Controls_VContainer/Room_Dimensions_Panel/Room_Dimensions/HBoxContainerDepth"]
+custom_minimum_size = Vector2(140, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = " Min Depth: (Random)"
 
 [node name="Roof_Panel" type="Panel" parent="Controls_VContainer"]
 custom_minimum_size = Vector2(300, 30)
 layout_mode = 2
-size_flags_vertical = 3
 
 [node name="Roof" type="HBoxContainer" parent="Controls_VContainer/Roof_Panel"]
 custom_minimum_size = Vector2(300, 30)
@@ -87,6 +105,7 @@ layout_mode = 2
 size_flags_horizontal = 2
 size_flags_vertical = 0
 text = "Generate a roof: "
+vertical_alignment = 1
 
 [node name="Roof_Toggle_Button" type="CheckButton" parent="Controls_VContainer/Roof_Panel/Roof"]
 layout_mode = 2
