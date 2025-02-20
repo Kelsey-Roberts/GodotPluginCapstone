@@ -1,12 +1,25 @@
-[gd_scene format=3 uid="uid://dfs4i1j13tq7o"]
+[gd_scene load_steps=5 format=3 uid="uid://dfs4i1j13tq7o"]
+
+[sub_resource type="Gradient" id="Gradient_vdtn6"]
+colors = PackedColorArray(0.211765, 0.239216, 0.290196, 1, 0.215686, 0.309804, 0.4, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_25mbk"]
+gradient = SubResource("Gradient_vdtn6")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_c37au"]
+bg_color = Color(0.14902, 0.180392, 0.215686, 1)
+
+[sub_resource type="Theme" id="Theme_8ggka"]
+Panel/styles/panel = SubResource("StyleBoxFlat_c37au")
 
 [node name="Room Generator" type="Control"]
-custom_minimum_size = Vector2(400, 648)
+custom_minimum_size = Vector2(400, 505)
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_right = -752.0
+offset_bottom = -143.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_stretch_ratio = 0.0
@@ -19,9 +32,9 @@ anchor_bottom = 1.0
 offset_right = 4.0
 grow_horizontal = 2
 grow_vertical = 2
+texture = SubResource("GradientTexture1D_25mbk")
 
 [node name="ControlsVContainer" type="VBoxContainer" parent="."]
-custom_minimum_size = Vector2(400, 500)
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
@@ -29,6 +42,7 @@ anchor_bottom = 1.012
 offset_bottom = -7.77606
 grow_horizontal = 2
 grow_vertical = 2
+theme = SubResource("Theme_8ggka")
 
 [node name="RoomCountPanel" type="Panel" parent="ControlsVContainer"]
 custom_minimum_size = Vector2(400, 90)
@@ -146,7 +160,7 @@ layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="Furniture_Toggle_Button" type="CheckButton" parent="ControlsVContainer/FurniturePanel/VBoxContainer"]
+[node name="Furniture_ToggleButton" type="CheckButton" parent="ControlsVContainer/FurniturePanel/VBoxContainer"]
 custom_minimum_size = Vector2(400, 0)
 layout_mode = 2
 size_flags_horizontal = 2
@@ -165,7 +179,7 @@ text = " Ratio of room inhabited (leave empty
  to randomize) by furniture (1-99%):"
 vertical_alignment = 1
 
-[node name="CountInput" type="TextEdit" parent="ControlsVContainer/FurniturePanel/VBoxContainer/HBoxContainer"]
+[node name="Count_Input" type="TextEdit" parent="ControlsVContainer/FurniturePanel/VBoxContainer/HBoxContainer"]
 custom_minimum_size = Vector2(100, 35)
 layout_mode = 2
 size_flags_horizontal = 8

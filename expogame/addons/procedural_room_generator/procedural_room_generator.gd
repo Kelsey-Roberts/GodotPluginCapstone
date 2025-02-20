@@ -164,17 +164,6 @@ func _on_delete_button_pressed() -> void:
 	
 
 
-
-
-
-
-
-
-
-
-
-
-
 func generate_room(xWidth,zDepth) -> void:
 	var room = Node3D.new()
 	room.name = "Room_" + Time.get_time_string_from_system()
