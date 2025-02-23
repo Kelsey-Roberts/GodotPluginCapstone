@@ -15,26 +15,44 @@ class Room:
 	var xWidth: int
 	var zDepth: int
 	var name: String
+	var location: Vector3
+	var direction: int
 
 	func _init(name: String, xWidth: int, zDepth: int):
 		self.xWidth = xWidth
 		self.zDepth = zDepth
 		self.name = name
+		
+
+class Hallway:
+	var dir: int #1 for north-south, 2 for east-west
+	var location: Vector3
+	
+	func _init(dir: int, location: Vector3):
+		self.location = location
+		self.dir = dir
+
+
+var hallwayArray: Array = []
 
 # List to hold all the Room objects
 var roomsArray: Array = []
 
+# Int to hold the length of the hallways between rooms
+const hallLength: int = 1
 
 # Declare the grid as a dictionary
 var grid: Dictionary = {}
 
 # Function to set a value in the grid (indicating if the space is filled)
-func set_value(x: int, y: int, value: bool):
-	grid[Vector2(x, y)] = value
+func set_value(x: int, y: int):
+	# Add the coordinate to the dictionary with a null value (marks it as filled)
+	grid[Vector2(x, y)] = null
 
 # Function to check if a value in the grid is filled
 func is_filled(x: int, y: int) -> bool:
-	return grid.get(Vector2(x, y), false)  # Default to false if the key doesn't exist
+	# Check if the coordinate exists in the dictionary
+	return grid.has(Vector2(x, y))
 
 # Function to check a range of cells (returns true if any cell in the range is filled)
 func check_range(x_min: int, x_max: int, y_min: int, y_max: int) -> bool:
@@ -43,6 +61,15 @@ func check_range(x_min: int, x_max: int, y_min: int, y_max: int) -> bool:
 			if is_filled(x, y):  # If any cell in the range is filled, return true
 				return true
 	return false  # No filled cells found
+
+# Function to add coordinates in the specified range to the grid (marking them as filled)
+func add_range_to_grid(xmin: int, xmax: int, ymin: int, ymax: int):
+	# Iterate through the range and add each coordinate to the dictionary (marking them as filled)
+	for x in range(xmin, xmax + 1):
+		for y in range(ymin, ymax + 1):
+			grid[Vector2(x, y)] = null  # Simply add the coordinate to the dictionary (this marks it as filled)
+
+
 
 
 
@@ -70,75 +97,118 @@ func _exit_tree() -> void:
 	dock.free()
 	
 func _on_generate_button_pressed() -> void:
-	
-		#now make the first room
-	#choose a direction randomly and make a second room of random length and width
-	#repeat that process for another 
-	
+	grid.clear()
 	# Create a RandomNumberGenerator instance
 	var rng: RandomNumberGenerator = RandomNumberGenerator.new()
 	rng.randomize()  # Seed the generator (optional)
 	
 	# Generate random numbers
-	var numOfRooms = rng.randi_range(5, 10)  # Random integer between 1 and 100
-	#var random_float = rng.randf()           # Random float between 0 and 1
-	#var random_float_range = rng.randf_range(-5.0, 5.0)  # Random float in range [-5.0, 5.0]
+	var numOfRooms = rng.randi_range(10, 15)  # Random integer between 1 and 100
 
 	print("Number of Rooms: ", numOfRooms)
 	
-	
-	
-	# Create room array
+	var positionedRoomsArray: Array = []
+	# Create all of the room data
 	# First clear the array
 	roomsArray.clear()
+	hallwayArray.clear()
 	for i in range(numOfRooms):
 		var x_width = rng.randi_range(1, 10)  # Random width between 1 and 10
 		var z_depth = rng.randi_range(1, 10)  # Random depth between 1 and 10
 		
 		# Create a new room and add it to the list
 		var new_room = Room.new("room" + str(i), x_width, z_depth)
+		new_room.location = Vector3(0,0,0)
 		roomsArray.append(new_room)
-		
-		
-		
+		#positionedRoomsArray.append(new_room)
+	
+	
+
+	#---------------------------------------------------------------------------------------------
+	# this is where we create the room relativity data (room positions relative to other rooms)
+	# This accomplishes setting the room locations
+	positionedRoomsArray.append(roomsArray[0])
+	positionedRoomsArray[0].location = Vector3(0,0,0)
+	addRoomToGrid(positionedRoomsArray[0])
+	for i in range(1, roomsArray.size()):
+		print("Room number: " , i , "is being checked in positioned loop")
+		var currentRoom = roomsArray[i]
+		for roomBefore in positionedRoomsArray:
+			
+			if not roomBefore.zPlusSlotOccupied:
+				var coord: Vector3 = getSlotCoord(roomBefore, 1)
+				currentRoom.location = getSpawnCoordFromSlotCoord(coord,1,currentRoom)
+				if isSpaceForRoom(currentRoom):
+					roomsArray[i].direction = 1
+					roomBefore.zPlusSlotOccupied = true
+					currentRoom.zMinusSlotOccupied = true
+					addRoomToGrid(currentRoom)
+					#make a new hallway and add it to the list
+					hallwayArray.append(Hallway.new(1, coord + Vector3(0,0,-.5)))
+					break
+				else:
+					currentRoom.location = Vector3(0,0,0)
+					pass
+			
+			elif not roomBefore.xPlusSlotOccupied:
+				var coord: Vector3 = getSlotCoord(roomBefore, 2)
+				currentRoom.location = getSpawnCoordFromSlotCoord(coord,2,currentRoom)
+				if isSpaceForRoom(currentRoom):
+					roomsArray[i].direction = 2
+					roomBefore.xPlusSlotOccupied = true
+					currentRoom.xMinusSlotOccupied = true
+					addRoomToGrid(currentRoom)
+					#make a new hallway and add it to the list
+					hallwayArray.append(Hallway.new(2, coord + Vector3(-.5,0,0)))
+					break
+				else:
+					currentRoom.location = Vector3(0,0,0)
+					pass
+			
+			elif not roomBefore.zMinusSlotOccupied:
+				var coord: Vector3 = getSlotCoord(roomBefore,3)
+				currentRoom.location = getSpawnCoordFromSlotCoord(coord,3,currentRoom)
+				if isSpaceForRoom(currentRoom):
+					roomsArray[i].direction = 3
+					roomBefore.zMinusSlotOccupied = true
+					currentRoom.zPlusSlotOccupied = true
+					addRoomToGrid(currentRoom)
+					#make a new hallway and add it to the list
+					hallwayArray.append(Hallway.new(1, coord + Vector3(0,0,+.5)))
+					break
+				else:
+					currentRoom.location = Vector3(0,0,0)
+					pass
+				
+				
+			elif not roomBefore.xMinusSlotOccupied:
+				var coord: Vector3 = getSlotCoord(roomBefore,4)
+				currentRoom.location = getSpawnCoordFromSlotCoord(coord,4,currentRoom)
+				if isSpaceForRoom(currentRoom):
+					roomsArray[i].direction = 4
+					roomBefore.xMinusSlotOccupied = true
+					currentRoom.xPlusSlotOccupied = true
+					addRoomToGrid(currentRoom)
+					#make a new hallway and add it to the list
+					hallwayArray.append(Hallway.new(2, coord + Vector3(+.5,0,0)))
+				else:
+					currentRoom.location = Vector3(0,0,0)
+					pass
+				
+		positionedRoomsArray.append(currentRoom)
+	
+	
 	for room in roomsArray:
-		print("Name: ", room.name, ", xWidth: ", room.xWidth, ", zDepth: ", room.zDepth, ", Bools: ", 
-			room.xPlusSlotOccupied, room.xMinusSlotOccupied, room.zPlusSlotOccupied, room.zMinusSlotOccupied)
+		print("Name: ", room.name, ", xWidth: ", room.xWidth, ", zDepth: ", room.zDepth, ", Location: ", room.location, ", Bools: ", 
+			room.zPlusSlotOccupied,room.xPlusSlotOccupied, room.zMinusSlotOccupied, room.xMinusSlotOccupied)
 	
-	# now that the list of rooms was created 
-	# for each room in the list (starting at the second)
-	# go through each room in the list looking for an open slot.
-	# when you find one update the slot and the location and the 
-	
-	
-	# for the first room: set the xPlusSlot to true
-	# for each room in the list: get the 
-	
-	# need to make spawnpoint member variables for the rooms. one for each direction
-	
-	# for each room in the list except the last: get the north spawn point
-	# create the next room (dir is 1)
-	var nextSpawnPoint = Vector3(0,0,0)
-	# Loop through every room except the last
-	for i in range(roomsArray.size() - 1):
-		# Access the current room
-		var current_room = roomsArray[i]
+	# this is where we actually generate the rooms
+	for currentRoom in positionedRoomsArray:
+		generate_room2(currentRoom)# generateRoom2()
 		
-		# Access the next room
-		var next_room = roomsArray[i + 1]
+	for currentHall in hallwayArray:
+		generate_hallway(currentHall)
 		
-		current_room.zPlusSlotOccupied = true
-		nextSpawnPoint = Vector3(nextSpawnPoint.x, nextSpawnPoint.y, nextSpawnPoint.z + current_room.zDepth/2)
-		if i==0:
-			nextSpawnPoint=Vector3(0,0,0)
-			generate_room2(current_room.name, nextSpawnPoint, 0, current_room.xWidth, current_room.zDepth, false, false, false, false)
-		else:
-			generate_room2(current_room.name, nextSpawnPoint, 0, current_room.xWidth, current_room.zDepth, false, false, false, false)
-		nextSpawnPoint = Vector3(nextSpawnPoint.x, nextSpawnPoint.y, nextSpawnPoint.z + current_room.zDepth/2 + 1)
-		
-		
-	#var r = roomsArray[1]
-	#generate_room2(r.name, Vector3(0,0,0), 0, r.xWidth, r.zDepth, false, false, false, false)
 	
 	
 	
@@ -173,63 +243,177 @@ func _on_delete_button_pressed() -> void:
 
 
 
-
-
-func generate_room(xWidth,zDepth) -> void:
-	var room = Node3D.new()
-	room.name = "Room_" + Time.get_time_string_from_system()
-
-	var room_mesh = MeshInstance3D.new()
-	var box_mesh = create_custom_room_mesh(xWidth, zDepth)
 	
+
+
+
+
+
+
+
+
+	
+func getSlotCoord(room: Room, dir: int) -> Vector3:
+	# this returns the coord for the room spawnpoint off of a given direction of a room
+	# so if you give room1 and 1 then it will give the coord in front of the north (z+) door of the room
+	
+	# first we get the transform of the room
+	var center = room.location
+	var slotCoord
+	
+	# Ensure proper float division
+	var half_width = room.xWidth / 2.0
+	var half_depth = room.zDepth / 2.0
+	
+	# if the direction is 1, add half the depth of the room + hallLength to center.z
+	if dir == 1:
+		slotCoord = Vector3(center.x, center.y, center.z + half_depth + hallLength)
+	# if the direction is 2, add half the width of the room + hallLength to center.x
+	elif dir == 2:
+		slotCoord = Vector3(center.x + half_width + hallLength, center.y, center.z)
+	# if the direction is 3, subtract half the depth of the room + hallLength from center.z
+	elif dir == 3:
+		slotCoord = Vector3(center.x, center.y, center.z - half_depth - hallLength)
+	# if the direction is 4, subtract half the width of the room + hallLength from center.x
+	elif dir == 4:
+		slotCoord = Vector3(center.x - half_width - hallLength, center.y, center.z)
+	else:
+		print("Error: Invalid direction given")
+		return center  # Return center as a fallback instead of an undefined variable
+	
+	return slotCoord
+	
+
+	
+func getSpawnCoordFromSlotCoord(slotCoord: Vector3, dir: int, room: Room) -> Vector3:
+	
+	var spawnCoord: Vector3
+	
+	# Ensure proper float division
+	var half_width = room.xWidth / 2.0
+	var half_depth = room.zDepth / 2.0
+	
+	# if the direction is 1, add half the depth of the room to slotCoord.z
+	if dir == 1:
+		spawnCoord = Vector3(slotCoord.x, slotCoord.y, slotCoord.z + half_depth)
+	# if the direction is 2, add half the width of the room to slotCoord.x
+	elif dir == 2:
+		spawnCoord = Vector3(slotCoord.x + half_width, slotCoord.y, slotCoord.z)
+	# if the direction is 3, subtract half the depth of the room from slotCoord.z
+	elif dir == 3:
+		spawnCoord = Vector3(slotCoord.x, slotCoord.y, slotCoord.z - half_depth)
+	# if the direction is 4, subtract half the width of the room from slotCoord.x
+	elif dir == 4:
+		spawnCoord = Vector3(slotCoord.x - half_width, slotCoord.y, slotCoord.z)
+	
+	return spawnCoord
+
+func get_room_bounds(room) -> Array:
+	var half_width = room.xWidth / 2
+	var half_depth = room.zDepth / 2
+	var xmin = int(room.location.x - half_width)
+	var xmax = int(room.location.x + half_width)
+	var zmin = int(room.location.z - half_depth)
+	var zmax = int(room.location.z + half_depth)
+	return [xmin, xmax, zmin, zmax]
+	
+
+
+func isSpaceForRoom(room: Room) -> bool:
+	var gridRange = get_room_bounds(room)
+	return !check_range(gridRange[0], gridRange[1], gridRange[2], gridRange[3])
+	
+	
+
+func addRoomToGrid(room: Room) -> void:
+	var gridRange = get_room_bounds(room)
+	# func add_range_to_grid(xmin: int, xmax: int, ymin: int, ymax: int):
+	add_range_to_grid(gridRange[0], gridRange[1], gridRange[2], gridRange[3])
+	
+
+
+func generate_room2(currentRoom: Room) -> void:
+	var room = Node3D.new()
+	room.name = currentRoom.name
+	var room_mesh = MeshInstance3D.new()
+	var box_mesh = create_custom_room_mesh2(currentRoom.location, currentRoom.direction, currentRoom.xWidth, currentRoom.zDepth, currentRoom.zPlusSlotOccupied, currentRoom.zMinusSlotOccupied, currentRoom.xMinusSlotOccupied, currentRoom.xPlusSlotOccupied)
 	room_mesh.mesh = box_mesh
 	room.add_child(room_mesh)
-
 	var current_scene = get_tree().edited_scene_root
 	current_scene.add_child(room)
 	room.owner = current_scene
-
+	
 	print("Room generated:", room.name)
 	
-
-
-func generate_room2(name, spawnPos, spawnDir, xWidth, zDepth, hasZPlusDoor, hasZMinusDoor, hasXMinusDoor, hasXPlusDoor) -> void:
-	var room = Node3D.new()
-	room.name = name
-	var room_mesh = MeshInstance3D.new()
-	var box_mesh = create_custom_room_mesh2(spawnPos, spawnDir, xWidth, zDepth, hasZPlusDoor, hasZMinusDoor, hasXMinusDoor, hasXPlusDoor)
-	
-	room_mesh.mesh = box_mesh
-	room.add_child(room_mesh)
-	#room.position = Vector3(10, 5, -3) #where did this line come from?
-	
-	var finalPosition
 	
 	
-	match spawnDir:
-		0:#this is no direction; centered
-			finalPosition = spawnPos
-		1:#this is ZPlus
-			finalPosition = Vector3(spawnPos.x, spawnPos.y, spawnPos.z + zDepth/2)#x,y,z
-		2:#this is ZMinus
-			finalPosition = Vector3(spawnPos.x, spawnPos.y, spawnPos.z - zDepth/2)
-		3:#this is XPlus
-			finalPosition = Vector3(spawnPos.x + xWidth, spawnPos.y, spawnPos.z)
-		4:#this is XMinus
-			finalPosition = Vector3(spawnPos.x - xWidth, spawnPos.y, spawnPos.z)
-		_:
-			print("Invalid spawn direction")
-	
-	
-	
-	room.position = finalPosition
-	
+func generate_hallway(currentHall: Hallway) -> void:
+	var hall = Node3D.new()
+	var hall_mesh = MeshInstance3D.new()
+	var box_mesh = create_hall_mesh(currentHall)
+	hall_mesh.mesh = box_mesh
+	hall.add_child(hall_mesh)
 	var current_scene = get_tree().edited_scene_root
-	current_scene.add_child(room)
-	room.owner = current_scene
+	current_scene.add_child(hall)
+	hall.owner = current_scene
 	
-	print("Room generated:", room.name)
+	print("Hall generated")
 	
+	
+	
+func create_hall_mesh(currentHall: Hallway) -> ArrayMesh:
+	var array_mesh = ArrayMesh.new()
+	
+	var squareVerts = PackedVector3Array([
+		Vector3(-.5, 0, -.5),  # back-left
+		Vector3(.5, 0, -.5),   # back-right
+		Vector3(.5, 0, .5),    # front-right
+	
+		Vector3(-.5, 0, -.5),  # back-left
+		Vector3(.5, 0, .5),    # front-right
+		Vector3(-.5, 0, .5)    # front-left
+	])
+	
+	var vertices = PackedVector3Array([])
+	
+	#this is the bottom face
+	for square_vert in squareVerts:  #bottomface
+		vertices.append(square_vert)
+	
+	var normals = PackedVector3Array([
+		
+		Vector3(0, 1, 0),  # Normal for bottomface
+		Vector3(0, 1, 0),
+		Vector3(0, 1, 0),
+		Vector3(0, 1, 0),
+		Vector3(0, 1, 0),
+		Vector3(0, 1, 0)
+	])
+	
+	for i in range(vertices.size()):  # Loop through each vertex in the array
+		vertices[i] = vertices[i] + currentHall.location
+		
+		
+	var indices = PackedInt32Array([0, 1, 2, 3, 4, 5])
+	
+	# Create an array of arrays for the vertex attributes
+	var arrays = Array()
+
+	# Assign vertices, normals, and indices
+	arrays.resize(Mesh.ARRAY_MAX)
+	arrays[Mesh.ARRAY_VERTEX] = vertices
+	arrays[Mesh.ARRAY_NORMAL] = normals
+	arrays[Mesh.ARRAY_INDEX] = indices
+
+	# Commit the data to the ArrayMesh
+	array_mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays)
+
+	return array_mesh
+	
+	
+
+
+
 
 
 func create_custom_room_mesh2(spawnPos, spawnDir, xWidth, zDepth, hasZPlusDoor, hasZMinusDoor, hasXMinusDoor, hasXPlusDoor) -> ArrayMesh:
@@ -281,6 +465,14 @@ func create_custom_room_mesh2(spawnPos, spawnDir, xWidth, zDepth, hasZPlusDoor, 
 	
 	# this is the front face
 	if hasZPlusDoor:
+		#remove this code in between lines when doors are implemented
+		#--------------------------------------------------------------
+		for square_vert in squareVerts:
+			var rotation_matrix = Basis().rotated(Vector3(1, 0, 0), deg_to_rad(-90))#front face
+			var rotated_vector = rotation_matrix * square_vert
+			vertices.append(Vector3(rotated_vector.x, rotated_vector.y + .4, rotated_vector.z+.5))
+		#--------------------------------------------------------------
+		
 		#add door verts
 		for doorWallVert in doorWallVerts:
 			pass
@@ -297,6 +489,13 @@ func create_custom_room_mesh2(spawnPos, spawnDir, xWidth, zDepth, hasZPlusDoor, 
 	
 	# this is the back face
 	if hasZMinusDoor:
+		#remove this code in between lines when doors are implemented
+		#--------------------------------------------------------------
+		for square_vert in squareVerts:
+			var rotation_matrix = Basis().rotated(Vector3(1, 0, 0), deg_to_rad(90))
+			var rotated_vector = rotation_matrix * square_vert
+			vertices.append(Vector3(rotated_vector.x, rotated_vector.y + .5, rotated_vector.z-.5))
+		#--------------------------------------------------------------
 		#add door verts
 		for doorWallVert in doorWallVerts:
 			pass
@@ -313,6 +512,14 @@ func create_custom_room_mesh2(spawnPos, spawnDir, xWidth, zDepth, hasZPlusDoor, 
 	
 	# this is the right face
 	if hasXPlusDoor:
+		#remove this code in between lines when doors are implemented
+		#--------------------------------------------------------------
+		for square_vert in squareVerts:
+			var rotation_matrix = Basis().rotated(Vector3(0, 0, 1), deg_to_rad(-90))
+			# Apply the rotation to the original vector
+			var rotated_vector = rotation_matrix * square_vert
+			vertices.append(Vector3(rotated_vector.x-.5, rotated_vector.y + .5, rotated_vector.z))
+		#--------------------------------------------------------------
 		#add door verts
 		for doorWallVert in doorWallVerts:
 			pass
@@ -331,6 +538,14 @@ func create_custom_room_mesh2(spawnPos, spawnDir, xWidth, zDepth, hasZPlusDoor, 
 	
 	# this is the left face
 	if hasXMinusDoor:
+		#remove this code in between lines when doors are implemented
+		#--------------------------------------------------------------
+		for square_vert in squareVerts:
+			var rotation_matrix = Basis().rotated(Vector3(0, 0, 1), deg_to_rad(90))
+			# Apply the rotation to the original vector
+			var rotated_vector = rotation_matrix * square_vert
+			vertices.append(Vector3(rotated_vector.x+.5, rotated_vector.y + .5, rotated_vector.z))
+		#--------------------------------------------------------------
 		#add door verts
 		for doorWallVert in doorWallVerts:
 			pass
@@ -391,6 +606,7 @@ func create_custom_room_mesh2(spawnPos, spawnDir, xWidth, zDepth, hasZPlusDoor, 
 	for i in range(vertices.size()):  # Loop through each vertex in the array
 		# Directly modify the elements in the vertices array
 		vertices[i] = Vector3(vertices[i].x * xScale, vertices[i].y * yScale, vertices[i].z * zScale)
+		vertices[i] = vertices[i] + spawnPos
 		
 		
 	var indices = PackedInt32Array([0, 1, 2, 3, 4, 5,      6, 7, 8, 9, 10, 11,      12,13,14,15,16,17,         18,19,20,21,22,23,        24,25,26,27,28,29])
@@ -411,175 +627,3 @@ func create_custom_room_mesh2(spawnPos, spawnDir, xWidth, zDepth, hasZPlusDoor, 
 	array_mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays)
 
 	return array_mesh
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-func create_custom_room_mesh(xWidth, zDepth) -> ArrayMesh:
-	# Create the ArrayMesh object
-	var array_mesh = ArrayMesh.new()
-
-	# Define the vertices for the square (using PackedVector3Array)
-	var squareVerts = PackedVector3Array([
-		Vector3(-.5, 0, -.5),  # back-left
-		Vector3(.5, 0, -.5),   # back-right
-		Vector3(.5, 0, .5),    # front-right
-
-		Vector3(-.5, 0, -.5),  # back-left
-		Vector3(.5, 0, .5),    # front-right
-		Vector3(-.5, 0, .5)    # front-left
-	])
-	
-	var doorWallVerts = PackedVector3Array([
-		Vector3(-.5,0,0),
-		Vector3(-.5,1,0),
-		Vector3(-.5,3,0),
-		Vector3(-.5,0,0),
-		Vector3(-.5,3,0),
-		Vector3(-.5,0,0),
-		
-		Vector3(-.5,2,0),
-		Vector3(-.5,3,0),
-		Vector3(.5,3,0),
-		Vector3(-.5,2,0),
-		Vector3(.5,3,0),
-		Vector3(.5,2,0),
-		
-		Vector3(.5,0,0),
-		Vector3(.5,3,0),
-		Vector3(.5,1,0),
-		Vector3(.5,0,0),
-		Vector3(.5,1,0),
-		Vector3(.5,0,0)
-	])
-	
-	var vertices = PackedVector3Array([])
-	
-	for square_vert in squareVerts:  #bottomface
-		vertices.append(square_vert)
-	
-	for square_vert in squareVerts:  #backface
-		var rotation_matrix = Basis().rotated(Vector3(1, 0, 0), deg_to_rad(90))
-		# Apply the rotation to the original vector
-		var rotated_vector = rotation_matrix * square_vert
-		vertices.append(Vector3(rotated_vector.x, rotated_vector.y + .5, rotated_vector.z-.5))
-		
-	for square_vert in squareVerts:  #leftface
-		var rotation_matrix = Basis().rotated(Vector3(0, 0, 1), deg_to_rad(90))
-		# Apply the rotation to the original vector
-		var rotated_vector = rotation_matrix * square_vert
-		vertices.append(Vector3(rotated_vector.x+.5, rotated_vector.y + .5, rotated_vector.z))
-		
-	for square_vert in squareVerts:  #rightface
-		var rotation_matrix = Basis().rotated(Vector3(0, 0, 1), deg_to_rad(-90))
-		# Apply the rotation to the original vector
-		var rotated_vector = rotation_matrix * square_vert
-		vertices.append(Vector3(rotated_vector.x-.5, rotated_vector.y + .5, rotated_vector.z))
-		
-	for doorWallVert in doorWallVerts: 
-		var rotation_matrix = Basis().rotated(Vector3(0, 1, 0), deg_to_rad(180))
-		var rotated_vector = rotation_matrix * doorWallVert
-		vertices.append(Vector3(rotated_vector.x, rotated_vector.y, rotated_vector.z+.5))
-	
-
-	# Define normals for the square (using PackedVector3Array)
-	var normals = PackedVector3Array([
-		Vector3(0, 1, 0),  # Normal for all vertices (facing up)
-		Vector3(0, 1, 0),
-		Vector3(0, 1, 0),
-		Vector3(0, 1, 0),
-		Vector3(0, 1, 0),
-		Vector3(0, 1, 0),
-		
-		Vector3(0, 0, 1),	# Normals for frontface
-		Vector3(0, 0, 1),
-		Vector3(0, 0, 1),
-		Vector3(0, 0, 1),
-		Vector3(0, 0, 1),
-		Vector3(0, 0, 1),
-		
-		Vector3(1, 0, 0),	# Normals for frontface
-		Vector3(1, 0, 0),
-		Vector3(1, 0, 0),
-		Vector3(1, 0, 0),
-		Vector3(1, 0, 0),
-		Vector3(1, 0, 0),
-		
-		Vector3(-1, 0, 0),	# Normals for frontface
-		Vector3(-1, 0, 0),
-		Vector3(-1, 0, 0),
-		Vector3(-1, 0, 0),
-		Vector3(-1, 0, 0),
-		Vector3(-1, 0, 0),
-		
-		Vector3(0, 0, 1),   # Normals for doorWall
-		Vector3(0, 0, 1),
-		Vector3(0, 0, 1),
-		Vector3(0, 0, 1),
-		Vector3(0, 0, 1),
-		Vector3(0, 0, 1),
-		Vector3(0, 0, 1),   
-		Vector3(0, 0, 1),
-		Vector3(0, 0, 1),
-		Vector3(0, 0, 1),
-		Vector3(0, 0, 1),
-		Vector3(0, 0, 1),
-		Vector3(0, 0, 1),   
-		Vector3(0, 0, 1),
-		Vector3(0, 0, 1),
-		Vector3(0, 0, 1),
-		Vector3(0, 0, 1),
-		Vector3(0, 0, 1),
-		
-		
-	])
-
-	# Define indices for the two triangles forming the square (using PackedInt32Array)
-	var indices = PackedInt32Array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,      12,13,14,15,16,17,         18,19,20,21,22,23,                                              24,25,26,27,28,29,    30,31,32,33,34,35,    36,37,38,39,40,41])
-
-	var xScale = xWidth
-	var yScale = 3.0
-	var zScale = zDepth
-
-	for i in range(vertices.size()):  # Loop through each vertex in the array
-		# Directly modify the elements in the vertices array
-		vertices[i] = Vector3(vertices[i].x * xScale, vertices[i].y * yScale, vertices[i].z * zScale)
-		
-		
-	#unscale the door (unscale the x for the door verts)
-	for i in range(vertices.size()):  # Loop through each vertex in the array
-		# Directly modify the elements in the vertices array
-		if i == (3 + 23) or ((5 + 23) <= i and i <= (14 + 23)) or i == (16 + 23):
-			vertices[i] = Vector3(vertices[i].x * 1.0/xScale, vertices[i].y* 1.0/yScale, vertices[i].z)
-		
-
-
-	# Create an array of arrays for the vertex attributes
-	var arrays = Array()
-
-	# Assign vertices, normals, and indices
-	arrays.resize(Mesh.ARRAY_MAX)
-	arrays[Mesh.ARRAY_VERTEX] = vertices
-	arrays[Mesh.ARRAY_NORMAL] = normals
-	arrays[Mesh.ARRAY_INDEX] = indices
-
-	# Commit the data to the ArrayMesh
-	array_mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays)
-
-	return array_mesh
-
-	
-
-	
