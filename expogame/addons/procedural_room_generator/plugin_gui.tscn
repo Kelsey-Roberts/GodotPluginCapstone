@@ -45,7 +45,7 @@ grow_vertical = 2
 theme = SubResource("Theme_8ggka")
 
 [node name="RoomCountPanel" type="Panel" parent="ControlsVContainer"]
-custom_minimum_size = Vector2(400, 90)
+custom_minimum_size = Vector2(400, 60)
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 4
@@ -62,15 +62,12 @@ layout_mode = 2
 size_flags_horizontal = 2
 size_flags_vertical = 0
 text = " Number of rooms to generate 
- (1-999) (leave empty to randomize):"
+ (1-999, 0 to randomize):"
 vertical_alignment = 1
 
-[node name="Ratio_Input" type="TextEdit" parent="ControlsVContainer/RoomCountPanel/HBoxContainer"]
-custom_minimum_size = Vector2(100, 35)
+[node name="RoomCount_SpinBox" type="SpinBox" parent="ControlsVContainer/RoomCountPanel/HBoxContainer"]
 layout_mode = 2
-size_flags_horizontal = 8
-size_flags_vertical = 4
-placeholder_text = "(Random)"
+max_value = 999.0
 
 [node name="RoomDimensionsPanel" type="Panel" parent="ControlsVContainer"]
 custom_minimum_size = Vector2(400, 150)
@@ -91,8 +88,7 @@ size_flags_vertical = 4
 [node name="Description" type="Label" parent="ControlsVContainer/RoomDimensionsPanel/Room_Dimensions"]
 custom_minimum_size = Vector2(0, 35)
 layout_mode = 2
-text = " Enter room dimensions (1-99 units) (leave empty
- to randomize): "
+text = " Enter room dimensions (1-99 units, 0 to randomize): "
 autowrap_mode = 3
 
 [node name="HBoxContainerWidth" type="HBoxContainer" parent="ControlsVContainer/RoomDimensionsPanel/Room_Dimensions"]
@@ -108,19 +104,15 @@ text = " Width: "
 horizontal_alignment = 1
 autowrap_mode = 3
 
-[node name="MaxWidth_Input" type="TextEdit" parent="ControlsVContainer/RoomDimensionsPanel/Room_Dimensions/HBoxContainerWidth"]
-custom_minimum_size = Vector2(135, 35)
+[node name="WidthMax_SpinBox" type="SpinBox" parent="ControlsVContainer/RoomDimensionsPanel/Room_Dimensions/HBoxContainerWidth"]
 layout_mode = 2
-size_flags_horizontal = 0
-size_flags_vertical = 4
-placeholder_text = " Max: (Random)"
+max_value = 99.0
+prefix = "Min:"
 
-[node name="MinWidth_Input" type="TextEdit" parent="ControlsVContainer/RoomDimensionsPanel/Room_Dimensions/HBoxContainerWidth"]
-custom_minimum_size = Vector2(135, 35)
+[node name="WidthMin_SpinBox" type="SpinBox" parent="ControlsVContainer/RoomDimensionsPanel/Room_Dimensions/HBoxContainerWidth"]
 layout_mode = 2
-size_flags_horizontal = 0
-size_flags_vertical = 4
-placeholder_text = "Min: (Random)"
+max_value = 99.0
+prefix = "Max:"
 
 [node name="HBoxContainerDepth" type="HBoxContainer" parent="ControlsVContainer/RoomDimensionsPanel/Room_Dimensions"]
 custom_minimum_size = Vector2(300, 45)
@@ -135,19 +127,15 @@ text = " Depth: "
 horizontal_alignment = 1
 autowrap_mode = 3
 
-[node name="MaxDepth_Input" type="TextEdit" parent="ControlsVContainer/RoomDimensionsPanel/Room_Dimensions/HBoxContainerDepth"]
-custom_minimum_size = Vector2(135, 35)
+[node name="DepthMax_SpinBox" type="SpinBox" parent="ControlsVContainer/RoomDimensionsPanel/Room_Dimensions/HBoxContainerDepth"]
 layout_mode = 2
-size_flags_horizontal = 0
-size_flags_vertical = 4
-placeholder_text = " Max: (Random)"
+max_value = 99.0
+prefix = "Min:"
 
-[node name="MinDepth_Input" type="TextEdit" parent="ControlsVContainer/RoomDimensionsPanel/Room_Dimensions/HBoxContainerDepth"]
-custom_minimum_size = Vector2(135, 35)
+[node name="DepthMin_SpinBox" type="SpinBox" parent="ControlsVContainer/RoomDimensionsPanel/Room_Dimensions/HBoxContainerDepth"]
 layout_mode = 2
-size_flags_horizontal = 0
-size_flags_vertical = 4
-placeholder_text = " Min: (Random)"
+max_value = 99.0
+prefix = "Max:"
 
 [node name="FurniturePanel" type="Panel" parent="ControlsVContainer"]
 custom_minimum_size = Vector2(400, 90)
@@ -175,16 +163,14 @@ custom_minimum_size = Vector2(0, 35)
 layout_mode = 2
 size_flags_horizontal = 2
 size_flags_vertical = 0
-text = " Ratio of room inhabited (leave empty 
- to randomize) by furniture (1-99%):"
+text = " Ratio of room inhabited by furniture
+ (1-99%, 0 to randomize):"
 vertical_alignment = 1
 
-[node name="Count_Input" type="TextEdit" parent="ControlsVContainer/FurniturePanel/VBoxContainer/HBoxContainer"]
-custom_minimum_size = Vector2(100, 35)
+[node name="Ratio_SpinBox" type="SpinBox" parent="ControlsVContainer/FurniturePanel/VBoxContainer/HBoxContainer"]
 layout_mode = 2
-size_flags_horizontal = 8
-size_flags_vertical = 4
-placeholder_text = "(Random)"
+max_value = 99.0
+suffix = "%"
 
 [node name="RoofPanel" type="Panel" parent="ControlsVContainer"]
 custom_minimum_size = Vector2(400, 30)
@@ -213,7 +199,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-text = "Generate"
+text = "Generate Rooms"
 
 [node name="DeleteButtonPanel" type="Panel" parent="ControlsVContainer"]
 custom_minimum_size = Vector2(400, 60)
@@ -227,4 +213,4 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-text = "Delete"
+text = "Delete Last Room"
