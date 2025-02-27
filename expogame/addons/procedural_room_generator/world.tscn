@@ -1,3 +1,61 @@
 [gd_scene format=3 uid="uid://l4mghqxckuke"]
 
 [node name="World" type="Node3D"]
+
+[node name="room0" type="Node3D" parent="."]
+
+[node name="room1" type="Node3D" parent="."]
+
+[node name="room2" type="Node3D" parent="."]
+
+[node name="room3" type="Node3D" parent="."]
+
+[node name="room4" type="Node3D" parent="."]
+
+[node name="room5" type="Node3D" parent="."]
+
+[node name="room6" type="Node3D" parent="."]
+
+[node name="room7" type="Node3D" parent="."]
+
+[node name="room8" type="Node3D" parent="."]
+
+[node name="room9" type="Node3D" parent="."]
+
+[node name="room10" type="Node3D" parent="."]
+
+[node name="room11" type="Node3D" parent="."]
+
+[node name="room12" type="Node3D" parent="."]
+
+[node name="room13" type="Node3D" parent="."]
+
+[node name="room14" type="Node3D" parent="."]
+
+[node name="@Node3D@17834" type="Node3D" parent="."]
+
+[node name="@Node3D@17836" type="Node3D" parent="."]
+
+[node name="@Node3D@17838" type="Node3D" parent="."]
+
+[node name="@Node3D@17840" type="Node3D" parent="."]
+
+[node name="@Node3D@17842" type="Node3D" parent="."]
+
+[node name="@Node3D@17844" type="Node3D" parent="."]
+
+[node name="@Node3D@17846" type="Node3D" parent="."]
+
+[node name="@Node3D@17848" type="Node3D" parent="."]
+
+[node name="@Node3D@17850" type="Node3D" parent="."]
+
+[node name="@Node3D@17852" type="Node3D" parent="."]
+
+[node name="@Node3D@17854" type="Node3D" parent="."]
+
+[node name="@Node3D@17856" type="Node3D" parent="."]
+
+[node name="@Node3D@17858" type="Node3D" parent="."]
+
+[node name="@Node3D@17860" type="Node3D" parent="."]

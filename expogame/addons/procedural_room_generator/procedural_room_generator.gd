@@ -191,6 +191,7 @@ func _on_generate_button_pressed() -> void:
 					addRoomToGrid(currentRoom)
 					#make a new hallway and add it to the list
 					hallwayArray.append(Hallway.new(2, coord + Vector3(+.5,0,0)))
+					break
 				else:
 					currentRoom.location = Vector3(0,0,0)
 					pass
@@ -470,7 +471,7 @@ func create_custom_room_mesh2(spawnPos, spawnDir, xWidth, zDepth, hasZPlusDoor, 
 		for square_vert in squareVerts:
 			var rotation_matrix = Basis().rotated(Vector3(1, 0, 0), deg_to_rad(-90))#front face
 			var rotated_vector = rotation_matrix * square_vert
-			vertices.append(Vector3(rotated_vector.x, rotated_vector.y + .4, rotated_vector.z+.5))
+			vertices.append(Vector3(rotated_vector.x, rotated_vector.y + .5, rotated_vector.z+.5))
 		#--------------------------------------------------------------
 		
 		#add door verts
@@ -482,7 +483,7 @@ func create_custom_room_mesh2(spawnPos, spawnDir, xWidth, zDepth, hasZPlusDoor, 
 		for square_vert in squareVerts:
 			var rotation_matrix = Basis().rotated(Vector3(1, 0, 0), deg_to_rad(-90))#front face
 			var rotated_vector = rotation_matrix * square_vert
-			vertices.append(Vector3(rotated_vector.x, rotated_vector.y + .4, rotated_vector.z+.5))
+			vertices.append(Vector3(rotated_vector.x, rotated_vector.y + .5, rotated_vector.z+.5))
 	
 	
 	
