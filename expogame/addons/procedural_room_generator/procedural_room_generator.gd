@@ -337,11 +337,25 @@ func generate_room2(currentRoom: Room) -> void:
 	var room = Node3D.new()
 	room.name = currentRoom.name
 	var room_mesh = MeshInstance3D.new()
-	var box_mesh = create_custom_room_mesh2(currentRoom.location, currentRoom.direction, currentRoom.xWidth, currentRoom.zDepth, currentRoom.zPlusSlotOccupied, currentRoom.zMinusSlotOccupied, currentRoom.xMinusSlotOccupied, currentRoom.xPlusSlotOccupied)
+	var box_mesh = create_custom_room_mesh2(currentRoom)
 	room_mesh.mesh = box_mesh
-	room.add_child(room_mesh)
+	#-----------------------------------------------
+	#A single hard-coded texture:
+	# Load the texture
+	var texture = load("res://assets/textures/stoneFloor.jpg") # Replace with your texture path
+
+	# Create a material and assign the texture
+	var material = StandardMaterial3D.new()
+	material.albedo_texture = texture  # Set the texture to the albedo property of the material
+
+	# Apply the material to the mesh
+	room_mesh.material_override = material
+	
+	#-----------------------------------------------
+	
 	var current_scene = get_tree().edited_scene_root
 	current_scene.add_child(room)
+	room.add_child(room_mesh)
 	room.owner = current_scene
 	
 	print("Room generated:", room.name)
@@ -417,8 +431,9 @@ func create_hall_mesh(currentHall: Hallway) -> ArrayMesh:
 
 
 
-func create_custom_room_mesh2(spawnPos, spawnDir, xWidth, zDepth, hasZPlusDoor, hasZMinusDoor, hasXMinusDoor, hasXPlusDoor) -> ArrayMesh:
+func create_custom_room_mesh2(currentRoom: Room) -> ArrayMesh:
 	var array_mesh = ArrayMesh.new()
+	var uvs = PackedVector2Array()
 	
 	# Define the vertices for the square (using PackedVector3Array)
 	var squareVerts = PackedVector3Array([
@@ -461,11 +476,48 @@ func create_custom_room_mesh2(spawnPos, spawnDir, xWidth, zDepth, hasZPlusDoor, 
 		vertices.append(square_vert)
 		# no rotation needed
 	
+	# add the UVs for the floor
+	# z axis will be y on texture - x axis is x on texture
+	#uvs.append(Vector2(0.0, 0.0))
+	#first find out what is longer the width or height of the room
+	var widthIsLarger = (currentRoom.xWidth>currentRoom.zDepth)
+	var largerSide
+	var smallerSide
+	if(widthIsLarger):
+		largerSide = float(currentRoom.xWidth)
+		smallerSide = float(currentRoom.zDepth)
+	else:
+		largerSide = float(currentRoom.zDepth)
+		smallerSide = float(currentRoom.xWidth)
+	#if that amount is 1 then get the other ratio - get biggerside/smaller side.
+	var ratio = float(smallerSide)/float(largerSide)
+	var space = (1-ratio)/2
 	
+	
+	#if depth is bigger:
+	# use these UVs: 
+	if(!widthIsLarger):
+		var left = space
+		var right = 1-space
+		uvs.append(Vector2(left,0))#0
+		uvs.append(Vector2(right,0))#1
+		uvs.append(Vector2(right,1))#2
+		uvs.append(Vector2(left,0))#3
+		uvs.append(Vector2(right,1))#4
+		uvs.append(Vector2(left,1))#5
+	else:
+		var lowerSpace = space
+		var upperSpace = 1-space
+		uvs.append(Vector2(0,lowerSpace))#0
+		uvs.append(Vector2(1,lowerSpace))#1
+		uvs.append(Vector2(1,upperSpace))#2
+		uvs.append(Vector2(0,lowerSpace))#3
+		uvs.append(Vector2(1,upperSpace))#4
+		uvs.append(Vector2(0,upperSpace))#5
 	
 	
 	# this is the front face
-	if hasZPlusDoor:
+	if currentRoom.zPlusSlotOccupied:
 		#remove this code in between lines when doors are implemented
 		#--------------------------------------------------------------
 		for square_vert in squareVerts:
@@ -489,7 +541,7 @@ func create_custom_room_mesh2(spawnPos, spawnDir, xWidth, zDepth, hasZPlusDoor, 
 	
 	
 	# this is the back face
-	if hasZMinusDoor:
+	if currentRoom.zMinusSlotOccupied:
 		#remove this code in between lines when doors are implemented
 		#--------------------------------------------------------------
 		for square_vert in squareVerts:
@@ -512,7 +564,7 @@ func create_custom_room_mesh2(spawnPos, spawnDir, xWidth, zDepth, hasZPlusDoor, 
 	
 	
 	# this is the right face
-	if hasXPlusDoor:
+	if currentRoom.xPlusSlotOccupied:
 		#remove this code in between lines when doors are implemented
 		#--------------------------------------------------------------
 		for square_vert in squareVerts:
@@ -538,7 +590,7 @@ func create_custom_room_mesh2(spawnPos, spawnDir, xWidth, zDepth, hasZPlusDoor, 
 	
 	
 	# this is the left face
-	if hasXMinusDoor:
+	if currentRoom.xMinusSlotOccupied:
 		#remove this code in between lines when doors are implemented
 		#--------------------------------------------------------------
 		for square_vert in squareVerts:
@@ -600,20 +652,25 @@ func create_custom_room_mesh2(spawnPos, spawnDir, xWidth, zDepth, hasZPlusDoor, 
 		
 	])
 	
-	var xScale = xWidth
+	var xScale = currentRoom.xWidth
 	var yScale = 3.0
-	var zScale = zDepth
+	var zScale = currentRoom.zDepth
 	
 	for i in range(vertices.size()):  # Loop through each vertex in the array
 		# Directly modify the elements in the vertices array
 		vertices[i] = Vector3(vertices[i].x * xScale, vertices[i].y * yScale, vertices[i].z * zScale)
-		vertices[i] = vertices[i] + spawnPos
+		vertices[i] = vertices[i] + currentRoom.location
 		
 		
 	var indices = PackedInt32Array([0, 1, 2, 3, 4, 5,      6, 7, 8, 9, 10, 11,      12,13,14,15,16,17,         18,19,20,21,22,23,        24,25,26,27,28,29])
 	
 	
-	
+	# Ensure UVs array length matches vertices array length
+	if uvs.size() < vertices.size():
+		# Add missing UVs
+		var missing_uvs = vertices.size() - uvs.size()
+		for i in range(missing_uvs):
+			uvs.append(Vector2(0, 0))  # Append Vector2(0,0) for each missing UV
 	
 	# Create an array of arrays for the vertex attributes
 	var arrays = Array()
@@ -623,7 +680,9 @@ func create_custom_room_mesh2(spawnPos, spawnDir, xWidth, zDepth, hasZPlusDoor, 
 	arrays[Mesh.ARRAY_VERTEX] = vertices
 	arrays[Mesh.ARRAY_NORMAL] = normals
 	arrays[Mesh.ARRAY_INDEX] = indices
-
+	arrays[Mesh.ARRAY_TEX_UV] = uvs  # Assign the UVs array to the mesh
+	
+	
 	# Commit the data to the ArrayMesh
 	array_mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays)
 
