@@ -1,7 +1,7 @@
 @tool
 extends EditorPlugin
 
-#--------------------------------------------------------------
+#-------------------------------------------------------------------------------
 	# Class Definitions
 
 # Define GUI_Input class to record user input
@@ -42,6 +42,7 @@ class Room:
 		self.name = name
 		
 
+# Define Hallway class
 class Hallway:
 	var dir: int #1 for north-south, 2 for east-west
 	var location: Vector3
@@ -50,8 +51,7 @@ class Hallway:
 		self.location = location
 		self.dir = dir
 
-
-#--------------------------------------------------------------
+#-------------------------------------------------------------------------------
 	# Global Variables
 
 var dock # Global Dock Location
@@ -60,9 +60,12 @@ var hallwayArray: Array = [] # List to hold all the Hallway objects
 var roomsArray: Array = [] # List to hold all the Room objects
 const hallLength: int = 1 # Int to hold the length of the hallways between rooms
 var grid: Dictionary = {} # Declare the grid as a dictionary
-var input: GUI_Input
+var input: GUI_Input # Global container for user input
 # Create a RandomNumberGenerator instance
-var rng: RandomNumberGenerator = RandomNumberGenerator.new()
+var rng: RandomNumberGenerator = RandomNumberGenerator.new() 
+
+#-------------------------------------------------------------------------------
+	# Grid Functions
 
 # Function to set a value in the grid (indicating if the space is filled)
 func set_value(x: int, y: int):
@@ -74,7 +77,8 @@ func is_filled(x: int, y: int) -> bool:
 	# Check if the coordinate exists in the dictionary
 	return grid.has(Vector2(x, y))
 
-# Function to check a range of cells (returns true if any cell in the range is filled)
+# Function to check a range of cells (returns true if any cell in the range is 
+	# filled)
 func check_range(x_min: int, x_max: int, y_min: int, y_max: int) -> bool:
 	for x in range(x_min, x_max + 1):
 		for y in range(y_min, y_max + 1):
@@ -82,22 +86,23 @@ func check_range(x_min: int, x_max: int, y_min: int, y_max: int) -> bool:
 				return true
 	return false  # No filled cells found
 
-# Function to add coordinates in the specified range to the grid (marking them as filled)
+# Function to add coordinates in the specified range to the grid (marking them 
+	# as filled)
 func add_range_to_grid(xmin: int, xmax: int, ymin: int, ymax: int):
 	# Iterate through the range and add each coordinate to the dictionary (marking them as filled)
 	for x in range(xmin, xmax + 1):
 		for y in range(ymin, ymax + 1):
 			grid[Vector2(x, y)] = null  # Simply add the coordinate to the dictionary (this marks it as filled)
 
+#-------------------------------------------------------------------------------
+	# Plugin Initialization and shutdown functions
 
-
+# Initialization of the plugin goes here.
 func _enter_tree() -> void:
-	# Initialization of the plugin goes here.
 	dock = preload("res://addons/procedural_room_generator/plugin_gui.tscn").instantiate()
 	add_control_to_dock(DOCK_SLOT_LEFT_BL, dock)
-	
-	delete_script = preload("res://addons/procedural_room_generator/delete_node.gd").new()
 	# fetch delete button script
+	delete_script = preload("res://addons/procedural_room_generator/delete_node.gd").new()
 	
 	# to grab controls from the dock simply right click the control and copy path
 	var generate_button = dock.get_node("ControlsVContainer/GenerateButtonPanel/Generate_Button")
@@ -107,39 +112,41 @@ func _enter_tree() -> void:
 	delete_button.pressed.connect(_on_delete_button_pressed)
 	
 	var delete_all_button = dock.get_node("ControlsVContainer/DeleteAllButtonPanel/DeleteAll_Button")
-	# TODO write method
-	# delete_button.pressed.connect(_on_delete_all_button_pressed)
+	delete_button.pressed.connect(_on_delete_all_button_pressed)
 	rng.randomize()  # Seed the generator (optional)
 
-
-
+# Clean-up of the plugin goes here.
 func _exit_tree() -> void:
-	# Clean-up of the plugin goes here.
 	remove_control_from_docks(dock)
 	dock.free()
-	
+
+# Generate Rooms Button
+# Room generation function
 func _on_generate_button_pressed() -> void:
 	grid.clear()
-	input = GUI_Input.new()
-	load_input()
-
-	print("Number of Rooms: ", input.numRooms)
+	input = GUI_Input.new() # Create new parameters
+	load_input() # Load parameters
 	
+	# DEBUG
+	print("Number of Rooms: ", input.numRooms)
 	var positionedRoomsArray: Array = []
 	# Create all of the room data
 	# First clear the array
 	roomsArray.clear()
 	hallwayArray.clear()
-	for i in range(input.numRooms):
+	# Create room objects through iteration
+	for i in range(input.numRooms): 
+		# 1. Find dimensions
 		var x_width = rng.randi_range(input.minDepth, input.maxDepth)
 		var z_depth = rng.randi_range(input.minWidth, input.maxWidth)
 		
-		# Create a new room and add it to the list
+		# 2. Create a new room
 		var new_room = Room.new("room" + str(i), x_width, z_depth)
 		new_room.location = Vector3(0,0,0)
+		
+		# 3. Add room to lists
 		roomsArray.append(new_room)
 		positionedRoomsArray.append(new_room)
-	
 	
 	
 	#---------------------------------------------------------------------------------------------
@@ -246,11 +253,20 @@ func _on_generate_button_pressed() -> void:
 	#generate_room(x_input,y_input)
 	#var spawnDir = 0
 	#generate_room2("room1", Vector3(0, 0, 0), spawnDir, x_input, y_input, false, false, false, false)
-	
+
+# Delete the Last Generated Room Button
+# Delete one room at a time.
 func _on_delete_button_pressed() -> void:
 	delete_script.call_deferred("delete_node_by_name", get_tree())
 
-# Link user input to generation script. Randomize for zeroes
+# Delete All Rooms Button
+# Delete all current room nodes.
+func _on_delete_all_button_pressed() -> void:
+	# TODO write method
+	return
+
+
+# Link user input to generation script. Randomize for zeroes.
 func load_input() -> void:
 	input.numRooms = dock.get_node("ControlsVContainer/RoomCountPanel/HBoxContainer/RoomCount_SpinBox").value
 	if input.numRooms == 0 : # If 0, generate between 3-20 rooms
@@ -275,26 +291,30 @@ func load_input() -> void:
 	input.genRoof = dock.get_node("ControlsVContainer/RoofPanel/Roof_Toggle_Button").button_pressed
 
 # Randomly generates in a range 3-20 for room count and dimensions.
+# Range to be adjusted as needed
 func randomized_input() -> int:
 	return rng.randi_range(3,20)
 
-# 
+# TO BE CALLED ONCE PER ROOM
+# Calculates how many pieces of furniture to add a room. Then creates furniture.
+# RETURNS array of furniture to be added
 func generate_furniture(width: int, depth: int) -> Array:
 	var area = width * depth # Calculate area
-	var furnCount = int((input.numFurn / 100) * area) # Calculate number of furniture
+	var furnCount = int((input.numFurn / 100) * area) # Calculate # of furniture
 	var arr = [] # Holds all funriture to be added to a room
 	for i in furnCount:
 		var furn = Furniture.new()
 		furn.furnNum = i
 		furn.furnID = rng.randi_range(1,10) # Find furniture ID
-		furn.dir = rng.randi_range(1,10) # Find direction furniture faces
+		furn.dir = rng.randi_range(1,4) # Find direction furniture faces
 		furn.x = rng.randi_range(0,width) # Find X coord
 		furn.y = rng.randi_range(0,depth) # Find Y coord
+		# TODO Eliminate duplicate coords so furniture doesn't spawn inside 
+			# each other
 		arr.append(furn) # Add furniture to room
 	return arr
 
-
-	
+# Getter - Returns spawn coordinates of the next room
 func getSlotCoord(room: Room, dir: int) -> Vector3:
 	# this returns the coord for the room spawnpoint off of a given direction of a room
 	# so if you give room1 and 1 then it will give the coord in front of the north (z+) door of the room
@@ -325,7 +345,7 @@ func getSlotCoord(room: Room, dir: int) -> Vector3:
 	
 	return slotCoord
 
-
+# Getter - Returns possible spawn coordinates of a room
 func getSpawnCoordFromSlotCoord(slotCoord: Vector3, dir: int, room: Room) -> Vector3:
 	
 	var spawnCoord: Vector3
@@ -349,6 +369,7 @@ func getSpawnCoordFromSlotCoord(slotCoord: Vector3, dir: int, room: Room) -> Vec
 	
 	return spawnCoord
 
+# Getter - Returns room bounds
 func get_room_bounds(room) -> Array:
 	var half_width = room.xWidth / 2
 	var half_depth = room.zDepth / 2
@@ -357,22 +378,19 @@ func get_room_bounds(room) -> Array:
 	var zmin = int(room.location.z - half_depth)
 	var zmax = int(room.location.z + half_depth)
 	return [xmin, xmax, zmin, zmax]
-	
 
-
+# Checks if there is space for the next room
 func isSpaceForRoom(room: Room) -> bool:
 	var gridRange = get_room_bounds(room)
 	return !check_range(gridRange[0], gridRange[1], gridRange[2], gridRange[3])
-	
-	
 
+# Adds room to grid
 func addRoomToGrid(room: Room) -> void:
 	var gridRange = get_room_bounds(room)
 	# func add_range_to_grid(xmin: int, xmax: int, ymin: int, ymax: int):
 	add_range_to_grid(gridRange[0], gridRange[1], gridRange[2], gridRange[3])
-	
 
-
+#
 func generate_room2(currentRoom: Room) -> void:
 	var room = Node3D.new()
 	room.name = currentRoom.name
@@ -380,7 +398,7 @@ func generate_room2(currentRoom: Room) -> void:
 	var box_mesh = create_custom_room_mesh2(currentRoom)
 	room_mesh.mesh = box_mesh
 	#-----------------------------------------------
-	#A single hard-coded texture:
+	# A single hard-coded texture:
 	# Load the texture
 	var texture = load("res://assets/textures/stoneFloor.jpg") # Replace with your texture path
 
@@ -399,9 +417,8 @@ func generate_room2(currentRoom: Room) -> void:
 	room.owner = current_scene
 	
 	print("Room generated:", room.name)
-	
-	
-	
+
+# Generates Hallways between Rooms
 func generate_hallway(currentHall: Hallway) -> void:
 	var hall = Node3D.new()
 	var hall_mesh = MeshInstance3D.new()
@@ -411,11 +428,10 @@ func generate_hallway(currentHall: Hallway) -> void:
 	var current_scene = get_tree().edited_scene_root
 	current_scene.add_child(hall)
 	hall.owner = current_scene
-	
+	# DEBUG
 	print("Hall generated")
-	
-	
-	
+
+# Generates Hallway Meshes
 func create_hall_mesh(currentHall: Hallway) -> ArrayMesh:
 	var array_mesh = ArrayMesh.new()
 	
@@ -431,8 +447,8 @@ func create_hall_mesh(currentHall: Hallway) -> ArrayMesh:
 	
 	var vertices = PackedVector3Array([])
 	
-	#this is the bottom face
-	for square_vert in squareVerts:  #bottomface
+	# this is the bottom face
+	for square_vert in squareVerts:  # bottomface
 		vertices.append(square_vert)
 	
 	var normals = PackedVector3Array([
@@ -464,13 +480,8 @@ func create_hall_mesh(currentHall: Hallway) -> ArrayMesh:
 	array_mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays)
 
 	return array_mesh
-	
-	
 
-
-
-
-
+#
 func create_custom_room_mesh2(currentRoom: Room) -> ArrayMesh:
 	var array_mesh = ArrayMesh.new()
 	var uvs = PackedVector2Array()
