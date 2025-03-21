@@ -3,6 +3,7 @@ extends EditorPlugin
 
 var dock # Global Dock Location
 var delete_script
+var seed_script
 
 
 
@@ -79,9 +80,14 @@ func _enter_tree() -> void:
 	dock = preload("res://addons/procedural_room_generator/plugin_gui.tscn").instantiate()
 	add_control_to_dock(DOCK_SLOT_LEFT_BL, dock)
 	
+	seed_script = preload("res://addons/procedural_room_generator/seed_generator.gd").new()
+	# fetch seeding script
+	
 	delete_script = preload("res://addons/procedural_room_generator/delete_node.gd").new()
+	# fetch delete button script
+	
 	# to grab controls from the dock simply right click the control and copy path
-	var generate_button = dock.get_node("Controls_VContainer/Generate_Button_Panel/Generate_Button")
+	var generate_button = dock.get_node("ControlsVContainer/GenerateButtonPanel/Generate_Button")
 	generate_button.pressed.connect(_on_generate_button_pressed)
 	
 	var delete_button = dock.get_node("Controls_VContainer/Delete_Button_Panel/Delete_Button")
@@ -103,7 +109,9 @@ func _on_generate_button_pressed() -> void:
 	rng.randomize()  # Seed the generator (optional)
 	
 	# Generate random numbers
-	var numOfRooms = rng.randi_range(10, 15)  # Random integer between 1 and 100
+	var numOfRooms = dock.get_node("ControlsVContainer/RoomCountPanel/HBoxContainer/Ratio_Input")  # Random integer between 1 and 100
+	#var random_float = rng.randf()           # Random float between 0 and 1
+	#var random_float_range = rng.randf_range(-5.0, 5.0)  # Random float in range [-5.0, 5.0]
 
 	print("Number of Rooms: ", numOfRooms)
 	
