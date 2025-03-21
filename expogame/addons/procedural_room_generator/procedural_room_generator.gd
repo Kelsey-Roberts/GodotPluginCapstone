@@ -14,6 +14,14 @@ class GUI_Input:
 	var numFurn: int # What Percentage of the room to be covered in furniture
 	var genRoof: bool = false # Tobble to generate roof
 
+# Define Furniture class to record funriture ID, direction, and coords
+class Furniture:
+	var furnNum: int # Which piece of furniture this is in the room
+	var furnID: int # 2 char ID representing which furniture to render
+	var direction: int # direction that the furniture faces
+	var x: int # X coord in room
+	var y: int # Y coord in room
+
 # Define the Room class
 class Room:
 	var zPlusSlotOccupied: bool = false
@@ -113,7 +121,7 @@ func _exit_tree() -> void:
 func _on_generate_button_pressed() -> void:
 	grid.clear()
 	input = GUI_Input.new()
-	_load_input()
+	load_input()
 
 	print("Number of Rooms: ", input.numRooms)
 	
@@ -243,22 +251,22 @@ func _on_delete_button_pressed() -> void:
 	delete_script.call_deferred("delete_node_by_name", get_tree())
 
 # Link user input to generation script. Randomize for zeroes
-func _load_input() -> void:
+func load_input() -> void:
 	input.numRooms = dock.get_node("ControlsVContainer/RoomCountPanel/HBoxContainer/RoomCount_SpinBox").value
 	if input.numRooms == 0 : # If 0, generate between 3-20 rooms
-		input.numRooms = _randomized_input()
+		input.numRooms = randomized_input()
 	input.minWidth = dock.get_node("ControlsVContainer/RoomDimensionsPanel/Room_Dimensions/HBoxContainerWidth/WidthMin_SpinBox").value
 	if input.minWidth == 0 : # If 0, generate between 3-20 units
-		input.minWidth = _randomized_input()
+		input.minWidth = randomized_input()
 	input.maxWidth = dock.get_node("ControlsVContainer/RoomDimensionsPanel/Room_Dimensions/HBoxContainerWidth/WidthMax_SpinBox").value
 	if input.maxWidth == 0 : # If 0, generate between 3-20 units
-		input.maxWidth = _randomized_input()
+		input.maxWidth = randomized_input()
 	input.minDepth = dock.get_node("ControlsVContainer/RoomDimensionsPanel/Room_Dimensions/HBoxContainerDepth/DepthMin_SpinBox").value
 	if input.minDepth == 0 : # If 0, generate between 3-20 units
-		input.minDepth = _randomized_input()
+		input.minDepth = randomized_input()
 	input.maxDepth = dock.get_node("ControlsVContainer/RoomDimensionsPanel/Room_Dimensions/HBoxContainerDepth/DepthMax_SpinBox").value
 	if input.maxDepth == 0 : # If 0, generate between 3-20 units
-		input.maxDepth = _randomized_input()
+		input.maxDepth = randomized_input()
 	input.numFurn = 0
 	if dock.get_node("ControlsVContainer/FurniturePanel/VBoxContainer/Furniture_ToggleButton").button_pressed :
 		input.numFurn = dock.get_node("ControlsVContainer/FurniturePanel/VBoxContainer/HBoxContainer/Ratio_SpinBox").value
@@ -267,24 +275,23 @@ func _load_input() -> void:
 	input.genRoof = dock.get_node("ControlsVContainer/RoofPanel/Roof_Toggle_Button").button_pressed
 
 # Randomly generates in a range 3-20 for room count and dimensions.
-func _randomized_input() -> int:
+func randomized_input() -> int:
 	return rng.randi_range(3,20)
 
-
-
-
-
-
-
-
-
-	
-
-
-
-
-
-
+# 
+func generate_furniture(width: int, depth: int) -> Array:
+	var area = width * depth # Calculate area
+	var furnCount = int((input.numFurn / 100) * area) # Calculate number of furniture
+	var arr = [] # Holds all funriture to be added to a room
+	for i in furnCount:
+		var furn = Furniture.new()
+		furn.furnNum = i
+		furn.furnID = rng.randi_range(1,10) # Find furniture ID
+		furn.dir = rng.randi_range(1,10) # Find direction furniture faces
+		furn.x = rng.randi_range(0,width) # Find X coord
+		furn.y = rng.randi_range(0,depth) # Find Y coord
+		arr.append(furn) # Add furniture to room
+	return arr
 
 
 	
@@ -317,9 +324,8 @@ func getSlotCoord(room: Room, dir: int) -> Vector3:
 		return center  # Return center as a fallback instead of an undefined variable
 	
 	return slotCoord
-	
 
-	
+
 func getSpawnCoordFromSlotCoord(slotCoord: Vector3, dir: int, room: Room) -> Vector3:
 	
 	var spawnCoord: Vector3
