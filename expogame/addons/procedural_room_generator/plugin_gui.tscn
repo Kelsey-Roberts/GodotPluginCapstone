@@ -13,7 +13,7 @@ bg_color = Color(0.14902, 0.180392, 0.215686, 1)
 Panel/styles/panel = SubResource("StyleBoxFlat_c37au")
 
 [node name="Room Generator" type="Control"]
-custom_minimum_size = Vector2(400, 505)
+custom_minimum_size = Vector2(400, 540)
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -123,7 +123,7 @@ size_flags_vertical = 3
 custom_minimum_size = Vector2(62, 32)
 layout_mode = 2
 size_flags_horizontal = 3
-text = " Depth: "
+text = " Length: "
 horizontal_alignment = 1
 autowrap_mode = 3
 
@@ -214,3 +214,17 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 text = "Delete Last Room"
+
+[node name="DeleteAllButtonPanel" type="Panel" parent="ControlsVContainer"]
+custom_minimum_size = Vector2(400, 60)
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="DeleteAll_Button" type="Button" parent="ControlsVContainer/DeleteAllButtonPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Delete All Rooms"

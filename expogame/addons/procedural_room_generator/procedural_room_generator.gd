@@ -1,11 +1,18 @@
 @tool
 extends EditorPlugin
 
-var dock # Global Dock Location
-var delete_script
-var seed_script
+#--------------------------------------------------------------
+	# Class Definitions
 
-
+# Define GUI_Input class to record user input
+class GUI_Input:
+	var numRooms: int # Number of Rooms
+	var minWidth: int # Minimum possible Width Dimension
+	var maxWidth: int # Maximum possible Width Dimension
+	var minDepth: int # Minimum possible Depth Dimension
+	var maxDepth: int # Maximum possible Depth Dimension
+	var numFurn: int # What Percentage of the room to be covered in furniture
+	var genRoof: bool = false # Tobble to generate roof
 
 # Define the Room class
 class Room:
@@ -18,6 +25,8 @@ class Room:
 	var name: String
 	var location: Vector3
 	var direction: int
+
+
 
 	func _init(name: String, xWidth: int, zDepth: int):
 		self.xWidth = xWidth
@@ -34,16 +43,18 @@ class Hallway:
 		self.dir = dir
 
 
-var hallwayArray: Array = []
+#--------------------------------------------------------------
+	# Global Variables
 
-# List to hold all the Room objects
-var roomsArray: Array = []
-
-# Int to hold the length of the hallways between rooms
-const hallLength: int = 1
-
-# Declare the grid as a dictionary
-var grid: Dictionary = {}
+var dock # Global Dock Location
+var delete_script # Script containing Delete Function
+var hallwayArray: Array = [] # List to hold all the Hallway objects
+var roomsArray: Array = [] # List to hold all the Room objects
+const hallLength: int = 1 # Int to hold the length of the hallways between rooms
+var grid: Dictionary = {} # Declare the grid as a dictionary
+var input: GUI_Input
+# Create a RandomNumberGenerator instance
+var rng: RandomNumberGenerator = RandomNumberGenerator.new()
 
 # Function to set a value in the grid (indicating if the space is filled)
 func set_value(x: int, y: int):
@@ -72,16 +83,10 @@ func add_range_to_grid(xmin: int, xmax: int, ymin: int, ymax: int):
 
 
 
-
-
-
 func _enter_tree() -> void:
 	# Initialization of the plugin goes here.
 	dock = preload("res://addons/procedural_room_generator/plugin_gui.tscn").instantiate()
 	add_control_to_dock(DOCK_SLOT_LEFT_BL, dock)
-	
-	seed_script = preload("res://addons/procedural_room_generator/seed_generator.gd").new()
-	# fetch seeding script
 	
 	delete_script = preload("res://addons/procedural_room_generator/delete_node.gd").new()
 	# fetch delete button script
@@ -93,8 +98,11 @@ func _enter_tree() -> void:
 	var delete_button = dock.get_node("Controls_VContainer/Delete_Button_Panel/Delete_Button")
 	delete_button.pressed.connect(_on_delete_button_pressed)
 	
-	
-	
+	var delete_all_button = dock.get_node("ControlsVContainer/DeleteAllButtonPanel/DeleteAll_Button")
+	#TODO write method
+	#delete_button.pressed.connect(_on_delete_all_button_pressed)
+	rng.randomize()  # Seed the generator (optional)
+
 
 
 func _exit_tree() -> void:
@@ -104,34 +112,28 @@ func _exit_tree() -> void:
 	
 func _on_generate_button_pressed() -> void:
 	grid.clear()
-	# Create a RandomNumberGenerator instance
-	var rng: RandomNumberGenerator = RandomNumberGenerator.new()
-	rng.randomize()  # Seed the generator (optional)
-	
-	# Generate random numbers
-	var numOfRooms = dock.get_node("ControlsVContainer/RoomCountPanel/HBoxContainer/Ratio_Input")  # Random integer between 1 and 100
-	#var random_float = rng.randf()           # Random float between 0 and 1
-	#var random_float_range = rng.randf_range(-5.0, 5.0)  # Random float in range [-5.0, 5.0]
+	input = GUI_Input.new()
+	_load_input()
 
-	print("Number of Rooms: ", numOfRooms)
+	print("Number of Rooms: ", input.numRooms)
 	
 	var positionedRoomsArray: Array = []
 	# Create all of the room data
 	# First clear the array
 	roomsArray.clear()
 	hallwayArray.clear()
-	for i in range(numOfRooms):
-		var x_width = rng.randi_range(1, 10)  # Random width between 1 and 10
-		var z_depth = rng.randi_range(1, 10)  # Random depth between 1 and 10
+	for i in range(input.numRooms):
+		var x_width = rng.randi_range(input.minDepth, input.maxDepth)
+		var z_depth = rng.randi_range(input.minWidth, input.maxWidth)
 		
 		# Create a new room and add it to the list
 		var new_room = Room.new("room" + str(i), x_width, z_depth)
 		new_room.location = Vector3(0,0,0)
 		roomsArray.append(new_room)
-		#positionedRoomsArray.append(new_room)
+		positionedRoomsArray.append(new_room)
 	
 	
-
+	
 	#---------------------------------------------------------------------------------------------
 	# this is where we create the room relativity data (room positions relative to other rooms)
 	# This accomplishes setting the room locations
@@ -240,9 +242,32 @@ func _on_generate_button_pressed() -> void:
 func _on_delete_button_pressed() -> void:
 	delete_script.call_deferred("delete_node_by_name", get_tree())
 
-	
+func _load_input() -> void:
+	input.numRooms = dock.get_node("ControlsVContainer/RoomCountPanel/HBoxContainer/RoomCount_SpinBox").value
+	if input.numRooms == 0 : # If 0, generate between 3-20 rooms
+		input.numRooms = _randomized_input()
+	input.minWidth = dock.get_node("ControlsVContainer/RoomDimensionsPanel/Room_Dimensions/HBoxContainerWidth/WidthMin_SpinBox").value
+	if input.minWidth == 0 : # If 0, generate between 3-20 units
+		input.minWidth = _randomized_input()
+	input.maxWidth = dock.get_node("ControlsVContainer/RoomDimensionsPanel/Room_Dimensions/HBoxContainerWidth/WidthMax_SpinBox").value
+	if input.maxWidth == 0 : # If 0, generate between 3-20 units
+		input.maxWidth = _randomized_input()
+	input.minDepth = dock.get_node("ControlsVContainer/RoomDimensionsPanel/Room_Dimensions/HBoxContainerDepth/DepthMin_SpinBox").value
+	if input.minDepth == 0 : # If 0, generate between 3-20 units
+		input.minDepth = _randomized_input()
+	input.maxDepth = dock.get_node("ControlsVContainer/RoomDimensionsPanel/Room_Dimensions/HBoxContainerDepth/DepthMax_SpinBox").value
+	if input.maxDepth == 0 : # If 0, generate between 3-20 units
+		input.maxDepth = _randomized_input()
+	input.numFurn = 0
+	if dock.get_node("ControlsVContainer/FurniturePanel/VBoxContainer/Furniture_ToggleButton").button_pressed :
+		input.numFurn = dock.get_node("ControlsVContainer/FurniturePanel/VBoxContainer/HBoxContainer/Ratio_SpinBox").value
+		if input.numFurn == 0 : # If 0, generate between 20-80% of the area covered in furniture
+			input.numFurn = rng.randi_range(20,80)
+	input.genRoof = dock.get_node("ControlsVContainer/RoofPanel/Roof_Toggle_Button").button_pressed
 
-
+# Randomly generates in a range 3-20 for room count and dimensions.
+func _randomized_input() -> int:
+	return rng.randi_range(3,20)
 
 
 
