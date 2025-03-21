@@ -95,12 +95,12 @@ func _enter_tree() -> void:
 	var generate_button = dock.get_node("ControlsVContainer/GenerateButtonPanel/Generate_Button")
 	generate_button.pressed.connect(_on_generate_button_pressed)
 	
-	var delete_button = dock.get_node("Controls_VContainer/Delete_Button_Panel/Delete_Button")
+	var delete_button = dock.get_node("ControlsVContainer/DeleteButtonPanel/Delete_Button")
 	delete_button.pressed.connect(_on_delete_button_pressed)
 	
 	var delete_all_button = dock.get_node("ControlsVContainer/DeleteAllButtonPanel/DeleteAll_Button")
-	#TODO write method
-	#delete_button.pressed.connect(_on_delete_all_button_pressed)
+	# TODO write method
+	# delete_button.pressed.connect(_on_delete_all_button_pressed)
 	rng.randomize()  # Seed the generator (optional)
 
 
@@ -242,6 +242,7 @@ func _on_generate_button_pressed() -> void:
 func _on_delete_button_pressed() -> void:
 	delete_script.call_deferred("delete_node_by_name", get_tree())
 
+# Link user input to generation script. Randomize for zeroes
 func _load_input() -> void:
 	input.numRooms = dock.get_node("ControlsVContainer/RoomCountPanel/HBoxContainer/RoomCount_SpinBox").value
 	if input.numRooms == 0 : # If 0, generate between 3-20 rooms
