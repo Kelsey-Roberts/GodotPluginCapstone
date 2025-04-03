@@ -418,19 +418,25 @@ func generate_room3(currentRoom: Room) -> void:
 	room_floor_mesh.material_override = floorMaterial
 	room_wall_mesh.material_override = wallMaterial
 	
-	room_wall_mesh.create_trimesh_collision()
-	room_floor_mesh.create_trimesh_collision()
+	
+	
+
 	
 	var current_scene = get_tree().edited_scene_root
 	var delete_node = get_editor_interface().get_edited_scene_root().get_node_or_null("Delete")
 	delete_node.add_child(room)
 	room.add_child(room_floor_mesh)
 	room.add_child(room_wall_mesh)
+	
+	
+	
 	room.owner = current_scene
 	room_floor_mesh.owner = current_scene
 	room_wall_mesh.owner = current_scene
-	
-	
+	room_wall_mesh.create_trimesh_collision()
+	room_floor_mesh.create_trimesh_collision()
+	#room_wall_mesh.get_child(0).owner = current_scene
+	#room_floor_mesh.get_child(0).owner = current_scene
 	
 	
 	
