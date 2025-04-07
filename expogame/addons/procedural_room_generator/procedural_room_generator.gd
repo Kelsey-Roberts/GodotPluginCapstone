@@ -21,6 +21,7 @@ class Furniture:
 	var direction: int # direction that the furniture faces
 	var x: int # X coord in room
 	var y: int # Y coord in room
+	var coord: Vector3
 
 # Define the Room class
 class Room:
@@ -33,6 +34,7 @@ class Room:
 	var name: String
 	var location: Vector3
 	var direction: int
+	var roomNode: Node3D
 
 
 
@@ -63,6 +65,7 @@ var grid: Dictionary = {} # Declare the grid as a dictionary
 var input: GUI_Input # Global container for user input
 # Create a RandomNumberGenerator instance
 var rng: RandomNumberGenerator = RandomNumberGenerator.new() 
+var furniture_assets: Array = []
 
 #-------------------------------------------------------------------------------
 	# Grid Functions
@@ -103,6 +106,10 @@ func _enter_tree() -> void:
 	add_control_to_dock(DOCK_SLOT_LEFT_BL, dock)
 	# fetch delete button script
 	delete_script = preload("res://addons/procedural_room_generator/delete_node.gd").new()
+	
+	if furniture_assets.is_empty():
+		load_furniture_assets()
+	print("furniture assets loaded :", furniture_assets.size())
 	
 	# to grab controls from the dock simply right click the control and copy path
 	var generate_button = dock.get_node("ControlsVContainer/GenerateButtonPanel/Generate_Button")
@@ -227,10 +234,13 @@ func _on_generate_button_pressed() -> void:
 	for room in roomsArray:
 		print("Name: ", room.name, ", xWidth: ", room.xWidth, ", zDepth: ", room.zDepth, ", Location: ", room.location, ", Bools: ", 
 			room.zPlusSlotOccupied,room.xPlusSlotOccupied, room.zMinusSlotOccupied, room.xMinusSlotOccupied)
+		
 	
 	# this is where we actually generate the rooms
 	for currentRoom in positionedRoomsArray:
 		generate_room2(currentRoom)# generateRoom2()
+		generate_furniture(currentRoom)
+		
 		
 	for currentHall in hallwayArray:
 		generate_hallway(currentHall)
@@ -298,21 +308,63 @@ func randomized_input() -> int:
 # TO BE CALLED ONCE PER ROOM
 # Calculates how many pieces of furniture to add a room. Then creates furniture.
 # RETURNS array of furniture to be added
-func generate_furniture(width: int, depth: int) -> Array:
-	var area = width * depth # Calculate area
-	var furnCount = int((input.numFurn / 100) * area) # Calculate # of furniture
+func generate_furniture(room: Room) -> Array:
+	var area = room.xWidth * room.zDepth # Calculate area
+	var furnCount = 4 # Calculate # of furniture
 	var arr = [] # Holds all funriture to be added to a room
 	for i in furnCount:
 		var furn = Furniture.new()
 		furn.furnNum = i
 		furn.furnID = rng.randi_range(1,10) # Find furniture ID
-		furn.dir = rng.randi_range(1,4) # Find direction furniture faces
-		furn.x = rng.randi_range(0,width) # Find X coord
-		furn.y = rng.randi_range(0,depth) # Find Y coord
+		furn.direction= rng.randi_range(1,4) # Find direction furniture faces
+		furn.coord = Vector3(rng.randi_range(-0.5 * room.xWidth, 0.5 * room.xWidth), 0, rng.randi_range(-0.5 * room.zDepth, 0.5 * room.zDepth)) 
 		# TODO Eliminate duplicate coords so furniture doesn't spawn inside 
 			# each other
 		arr.append(furn) # Add furniture to room
+		var furn_scene = furniture_assets[rng.randi_range(0, furniture_assets.size() - 1)].duplicate()
+		furn_scene.global_position = Vector3.ZERO
+		furn_scene.translate(furn.coord + room.location)
+		room.roomNode.add_child(furn_scene)
+		#var chair = load("res://Assets/furniture/Chair.tscn").instantiate()
+		#chair.translate(furn.coord + room.location)
+		#room.roomNode.add_child(chair)
+		
+		
 	return arr
+	
+func load_furniture_assets():
+	# Get all files in the Assets/furniture folder
+	print("Attempting to open res://Assets/furniture/ directory...")
+	var dir = DirAccess.open("res://Assets/furniture/")
+	if dir == null:
+		print("Failed to open directory: res://Assets/furniture/")
+		return
+
+	print("Directory opened successfully.")
+	dir.list_dir_begin()
+	var file_name = dir.get_next()
+
+	# Print out all files in the directory to debug
+	print("Listing files in res://Assets/furniture/ directory:")
+	while file_name != "":
+		print("Found file: ", file_name)
+		# Try loading the file (without filtering by extension)
+		var scene_path = "res://Assets/furniture/" + file_name
+		var scene = load(scene_path)  # Load the scene
+
+		# Debugging the scene loading process
+		if scene is PackedScene:
+			print("Successfully loaded scene: ", scene_path)
+			var instance = scene.instantiate()  # Instantiate the scene (fixing method for instantiation in Godot 4)
+			furniture_assets.append(instance)  # Add to the array
+		else:
+			print("Failed to load scene: ", scene_path)
+
+		# Move to the next file
+		file_name = dir.get_next()
+
+	dir.list_dir_end()
+	print("Finished processing files in directory.")
 
 # Getter - Returns spawn coordinates of the next room
 func getSlotCoord(room: Room, dir: int) -> Vector3:
@@ -415,6 +467,7 @@ func generate_room2(currentRoom: Room) -> void:
 	current_scene.add_child(room)
 	room.add_child(room_mesh)
 	room.owner = current_scene
+	currentRoom.roomNode = room
 	
 	print("Room generated:", room.name)
 
