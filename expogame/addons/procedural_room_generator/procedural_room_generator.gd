@@ -322,9 +322,10 @@ func generate_furniture(room: Room) -> Array:
 			# each other
 		arr.append(furn) # Add furniture to room
 		var furn_scene = furniture_assets[rng.randi_range(0, furniture_assets.size() - 1)].duplicate()
+		room.roomNode.add_child(furn_scene)
 		furn_scene.global_position = Vector3.ZERO
 		furn_scene.translate(furn.coord + room.location)
-		room.roomNode.add_child(furn_scene)
+		
 		#var chair = load("res://Assets/furniture/Chair.tscn").instantiate()
 		#chair.translate(furn.coord + room.location)
 		#room.roomNode.add_child(chair)
