@@ -10,16 +10,82 @@
 
 [node name="room3" type="Node3D" parent="."]
 
-[node name="@Node3D@29501" type="Node3D" parent="."]
+[node name="room4" type="Node3D" parent="."]
 
-[node name="@Node3D@29504" type="Node3D" parent="."]
+[node name="room5" type="Node3D" parent="."]
 
-[node name="@Node3D@29507" type="Node3D" parent="."]
+[node name="room6" type="Node3D" parent="."]
 
-[node name="@Node3D@29511" type="Node3D" parent="."]
+[node name="room7" type="Node3D" parent="."]
 
-[node name="@Node3D@29515" type="Node3D" parent="."]
+[node name="room8" type="Node3D" parent="."]
 
-[node name="@Node3D@29517" type="Node3D" parent="."]
+[node name="room9" type="Node3D" parent="."]
 
-[node name="@Node3D@29519" type="Node3D" parent="."]
+[node name="room10" type="Node3D" parent="."]
+
+[node name="room11" type="Node3D" parent="."]
+
+[node name="room12" type="Node3D" parent="."]
+
+[node name="room13" type="Node3D" parent="."]
+
+[node name="room14" type="Node3D" parent="."]
+
+[node name="@Node3D@54712" type="Node3D" parent="."]
+
+[node name="@Node3D@54717" type="Node3D" parent="."]
+
+[node name="@Node3D@54722" type="Node3D" parent="."]
+
+[node name="@Node3D@54727" type="Node3D" parent="."]
+
+[node name="@Node3D@54732" type="Node3D" parent="."]
+
+[node name="@Node3D@54737" type="Node3D" parent="."]
+
+[node name="@Node3D@54742" type="Node3D" parent="."]
+
+[node name="@Node3D@54747" type="Node3D" parent="."]
+
+[node name="@Node3D@54752" type="Node3D" parent="."]
+
+[node name="@Node3D@54757" type="Node3D" parent="."]
+
+[node name="@Node3D@54762" type="Node3D" parent="."]
+
+[node name="@Node3D@54767" type="Node3D" parent="."]
+
+[node name="@Node3D@54772" type="Node3D" parent="."]
+
+[node name="@Node3D@54777" type="Node3D" parent="."]
+
+[node name="@Node3D@54782" type="Node3D" parent="."]
+
+[node name="@Node3D@54788" type="Node3D" parent="."]
+
+[node name="@Node3D@54790" type="Node3D" parent="."]
+
+[node name="@Node3D@54792" type="Node3D" parent="."]
+
+[node name="@Node3D@54794" type="Node3D" parent="."]
+
+[node name="@Node3D@54796" type="Node3D" parent="."]
+
+[node name="@Node3D@54798" type="Node3D" parent="."]
+
+[node name="@Node3D@54800" type="Node3D" parent="."]
+
+[node name="@Node3D@54802" type="Node3D" parent="."]
+
+[node name="@Node3D@54804" type="Node3D" parent="."]
+
+[node name="@Node3D@54806" type="Node3D" parent="."]
+
+[node name="@Node3D@54808" type="Node3D" parent="."]
+
+[node name="@Node3D@54810" type="Node3D" parent="."]
+
+[node name="@Node3D@54812" type="Node3D" parent="."]
+
+[node name="@Node3D@54814" type="Node3D" parent="."]

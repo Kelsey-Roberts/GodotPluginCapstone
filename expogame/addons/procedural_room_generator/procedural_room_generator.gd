@@ -107,8 +107,6 @@ func _enter_tree() -> void:
 	# fetch delete button script
 	delete_script = preload("res://addons/procedural_room_generator/delete_node.gd").new()
 	
-	if furniture_assets.is_empty():
-		load_furniture_assets()
 	print("furniture assets loaded :", furniture_assets.size())
 	
 	# to grab controls from the dock simply right click the control and copy path
@@ -133,7 +131,8 @@ func _on_generate_button_pressed() -> void:
 	grid.clear()
 	input = GUI_Input.new() # Create new parameters
 	load_input() # Load parameters
-	
+	furniture_assets = []
+	load_furniture_assets()
 	# DEBUG
 	print("Number of Rooms: ", input.numRooms)
 	var positionedRoomsArray: Array = []
@@ -324,7 +323,8 @@ func generate_furniture(room: Room) -> Array:
 		var furn_scene = furniture_assets[rng.randi_range(0, furniture_assets.size() - 1)].duplicate()
 		room.roomNode.add_child(furn_scene)
 		furn_scene.global_position = Vector3.ZERO
-		furn_scene.translate(furn.coord + room.location)
+		furn_scene.global_position = (furn.coord + room.location)
+		furn_scene.rotation_degrees=Vector3(0,furn.direction * 90, 0)
 		
 		#var chair = load("res://Assets/furniture/Chair.tscn").instantiate()
 		#chair.translate(furn.coord + room.location)
