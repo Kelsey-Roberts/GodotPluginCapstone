@@ -307,7 +307,7 @@ func randomized_input() -> int:
 # TO BE CALLED ONCE PER ROOM
 # Calculates how many pieces of furniture to add a room. Then creates furniture.
 # RETURNS array of furniture to be added
-func generate_furniture(room: Room) -> Array:
+func generate_furniture(room: Room):
 	var area = room.xWidth * room.zDepth # Calculate area
 	var furnCount = 4 # Calculate # of furniture
 	var arr = [] # Holds all funriture to be added to a room
@@ -316,15 +316,20 @@ func generate_furniture(room: Room) -> Array:
 		furn.furnNum = i
 		furn.furnID = rng.randi_range(1,10) # Find furniture ID
 		furn.direction= rng.randi_range(1,4) # Find direction furniture faces
-		furn.coord = Vector3(rng.randi_range(-0.5 * room.xWidth, 0.5 * room.xWidth), 0, rng.randi_range(-0.5 * room.zDepth, 0.5 * room.zDepth)) 
+		var coords = Vector3(rng.randi_range(-0.5 * room.xWidth, 0.5 * room.xWidth), 0, rng.randi_range(-0.5 * room.zDepth, 0.5 * room.zDepth)) 
 		# TODO Eliminate duplicate coords so furniture doesn't spawn inside 
 			# each other
 		arr.append(furn) # Add furniture to room
-		var furn_scene = furniture_assets[rng.randi_range(0, furniture_assets.size() - 1)].duplicate()
+		var packed_scene = furniture_assets[rng.randi_range(0, furniture_assets.size() - 1)]
+		var furn_scene = packed_scene.duplicate()
 		room.roomNode.add_child(furn_scene)
 		furn_scene.global_position = Vector3.ZERO
-		furn_scene.global_position = (furn.coord + room.location)
+		furn_scene.global_position = (coords + room.location)
 		furn_scene.rotation_degrees=Vector3(0,furn.direction * 90, 0)
+		var current_scene = get_tree().edited_scene_root
+		furn_scene.name = "Furniture_" + str(i)
+		furn_scene.owner = current_scene
+		
 		
 		#var chair = load("res://Assets/furniture/Chair.tscn").instantiate()
 		#chair.translate(furn.coord + room.location)
