@@ -237,7 +237,7 @@ func _on_generate_button_pressed() -> void:
 	
 	# this is where we actually generate the rooms
 	for currentRoom in positionedRoomsArray:
-		generate_room2(currentRoom)# generateRoom2()
+		generate_room3(currentRoom)# generateRoom2()
 		generate_furniture(currentRoom)
 		
 		
@@ -449,7 +449,7 @@ func addRoomToGrid(room: Room) -> void:
 	add_range_to_grid(gridRange[0], gridRange[1], gridRange[2], gridRange[3])
 
 #
-func generate_room2(currentRoom: Room) -> void:
+func generate_room3(currentRoom: Room) -> void:
 	var room = Node3D.new()
 	room.name = currentRoom.name
 	var room_mesh = MeshInstance3D.new()
