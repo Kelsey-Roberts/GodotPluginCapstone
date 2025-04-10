@@ -356,42 +356,6 @@ func addRoomToGrid(room: Room) -> void:
 	
 
 
-func generate_room2(currentRoom: Room) -> void:
-	var room = Node3D.new()
-	room.name = currentRoom.name
-	var room_wall_mesh = MeshInstance3D.new()
-	var wall_mesh = create_custom_wall_mesh3(currentRoom)
-	room_wall_mesh.mesh = wall_mesh
-	var room_floor_mesh = MeshInstance3D.new()
-	var floor_mesh = create_custom_floor_mesh(currentRoom)
-	room_floor_mesh.mesh = floor_mesh
-	#-----------------------------------------------
-	#A single hard-coded texture:
-	# Load the texture
-	var floorTexture = load("res://assets/textures/stoneFloor.jpg") # Replace with your texture path
-	var wallTexture = load("res://assets/textures/stoneBrickWall.jpg")
-	# Create a material and assign the texture
-	var floorMaterial = StandardMaterial3D.new()
-	floorMaterial.albedo_texture = floorTexture  # Set the texture to the albedo property of the material
-	
-	var wallMaterial = StandardMaterial3D.new()
-	wallMaterial.albedo_texture = wallTexture
-	# Apply the material to the mesh
-	room_floor_mesh.material_override = floorMaterial
-	room_wall_mesh.material_override = wallMaterial
-	
-	#-----------------------------------------------
-	
-	var current_scene = get_tree().edited_scene_root
-	var delete_node = get_editor_interface().get_edited_scene_root().get_node_or_null("Delete")
-	#current_scene.add_child(room)
-	delete_node.add_child(room)
-	room.add_child(room_floor_mesh)
-	room.add_child(room_wall_mesh)
-	room.owner = current_scene
-	#room.owner = delete_node
-	
-	print("Room generated:", room.name)
 	
 	
 	
@@ -418,17 +382,11 @@ func generate_room3(currentRoom: Room) -> void:
 	room_floor_mesh.material_override = floorMaterial
 	room_wall_mesh.material_override = wallMaterial
 	
-	
-	
-
-	
 	var current_scene = get_tree().edited_scene_root
 	var delete_node = get_editor_interface().get_edited_scene_root().get_node_or_null("Delete")
 	delete_node.add_child(room)
 	room.add_child(room_floor_mesh)
 	room.add_child(room_wall_mesh)
-	
-	
 	
 	room.owner = current_scene
 	room_floor_mesh.owner = current_scene
@@ -437,37 +395,94 @@ func generate_room3(currentRoom: Room) -> void:
 	room_floor_mesh.create_trimesh_collision()
 	#room_wall_mesh.get_child(0).owner = current_scene
 	#room_floor_mesh.get_child(0).owner = current_scene
+	#==========================================================
 	
 	
 	
-	
-
-	
-	
-	
-	
+#func generate_hallway(currentHall: Hallway) -> void:
+	#var hall = Node3D.new()
+	#var hall_mesh = MeshInstance3D.new()
+	#var box_mesh = create_hall_mesh(currentHall)
+	#hall_mesh.mesh = box_mesh
+	#hall.add_child(hall_mesh)
+	#
+	##hall.owner = delete_node
+	#
+	#var hallTexture = load("res://assets/textures/hallTexture.jpg")
+	#var hallMaterial = StandardMaterial3D.new()
+	#hallMaterial.albedo_texture = hallTexture
+	#
+	#hall_mesh.material_override = hallMaterial
+	#
+	#var current_scene = get_tree().edited_scene_root
+	#var delete_node = get_editor_interface().get_edited_scene_root().get_node_or_null("Delete")
+	##current_scene.add_child(hall)
+	#delete_node.add_child(hall)
+	#hall.owner = current_scene
+	#hall_mesh.owner = current_scene
+	#hall_mesh.create_trimesh_collision()
+	#
+	#print("Hall generated")
 	
 	
 	
 func generate_hallway(currentHall: Hallway) -> void:
 	var hall = Node3D.new()
-	var hall_mesh = MeshInstance3D.new()
-	var box_mesh = create_hall_mesh(currentHall)
-	hall_mesh.mesh = box_mesh
-	hall.add_child(hall_mesh)
+	
+	var hall_floor_mesh = MeshInstance3D.new()
+	hall_floor_mesh.mesh = create_hall_floor_mesh(currentHall)
+	
+	var hall_wall_mesh = MeshInstance3D.new()
+	hall_wall_mesh.mesh = create_hall_wall_mesh(currentHall)
+	
+	var hall_ceiling_mesh = MeshInstance3D.new()
+	hall_ceiling_mesh.mesh = create_hall_ceiling_mesh(currentHall)
+	
+	
+	hall.add_child(hall_floor_mesh)
+	hall.add_child(hall_wall_mesh)
+	hall.add_child(hall_ceiling_mesh)
+	
+	
+	var hallTexture = load("res://assets/textures/hallTexture.jpg")
+	var hallMaterial = StandardMaterial3D.new()
+	hallMaterial.albedo_texture = hallTexture
+	
+	hall_floor_mesh.material_override = hallMaterial
+	hall_wall_mesh.material_override = hallMaterial
+	hall_ceiling_mesh.material_override = hallMaterial
+	
 	var current_scene = get_tree().edited_scene_root
 	var delete_node = get_editor_interface().get_edited_scene_root().get_node_or_null("Delete")
 	#current_scene.add_child(hall)
 	delete_node.add_child(hall)
 	hall.owner = current_scene
-	#hall.owner = delete_node
+	
+	hall_floor_mesh.owner = current_scene
+	hall_floor_mesh.create_trimesh_collision()
+	
+	hall_wall_mesh.owner = current_scene
+	hall_wall_mesh.create_trimesh_collision()
+	
+	hall_ceiling_mesh.owner = current_scene
+	hall_wall_mesh.create_trimesh_collision()
 	
 	print("Hall generated")
 	
 	
 	
-func create_hall_mesh(currentHall: Hallway) -> ArrayMesh:
+	
+func create_hall_floor_mesh(currentHall: Hallway) -> ArrayMesh:
 	var array_mesh = ArrayMesh.new()
+	
+	var uvs = PackedVector2Array([#adding the uvs for the bottom square:
+		Vector2(0, 0),
+		Vector2(1, 0),
+		Vector2(1, 1),
+		Vector2(0, 0),
+		Vector2(1, 1),
+		Vector2(0, 1)
+	])
 	
 	var squareVerts = PackedVector3Array([
 		Vector3(-.5, 0, -.5),  # back-left
@@ -498,6 +513,70 @@ func create_hall_mesh(currentHall: Hallway) -> ArrayMesh:
 	for i in range(vertices.size()):  # Loop through each vertex in the array
 		vertices[i] = vertices[i] + currentHall.location
 		
+	var indices = PackedInt32Array([0, 1, 2, 3, 4, 5])
+	
+	# Create an array of arrays for the vertex attributes
+	var arrays = Array()
+
+	# Assign vertices, normals, and indices
+	arrays.resize(Mesh.ARRAY_MAX)
+	arrays[Mesh.ARRAY_VERTEX] = vertices
+	arrays[Mesh.ARRAY_NORMAL] = normals
+	arrays[Mesh.ARRAY_INDEX] = indices
+	arrays[Mesh.ARRAY_TEX_UV] = uvs  # Assign the UVs array to the mesh
+
+	# Commit the data to the ArrayMesh
+	array_mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays)
+
+	return array_mesh
+
+
+
+
+
+func create_hall_ceiling_mesh(currentHall: Hallway) -> ArrayMesh:
+	var array_mesh = ArrayMesh.new()
+	
+	var uvs = PackedVector2Array([#adding the uvs for the bottom square:
+		Vector2(0, 0),
+		Vector2(1, 0),
+		Vector2(1, 1),
+		Vector2(0, 0),
+		Vector2(1, 1),
+		Vector2(0, 1)
+	])
+	
+	var squareVerts = PackedVector3Array([
+		Vector3(-.5, 0, -.5),  # back-left
+		Vector3(.5, 0, -.5),   # back-right
+		Vector3(.5, 0, .5),    # front-right
+	
+		Vector3(-.5, 0, -.5),  # back-left
+		Vector3(.5, 0, .5),    # front-right
+		Vector3(-.5, 0, .5)    # front-left
+	])
+	
+	var vertices = PackedVector3Array([])
+	
+	#this is the bottom face
+	for square_vert in squareVerts:  #bottomface
+		var rotation_matrix = Basis().rotated(Vector3(1, 0, 0), deg_to_rad(180))
+		square_vert = rotation_matrix * square_vert
+		square_vert.y += 2
+		vertices.append(square_vert)
+	
+	var normals = PackedVector3Array([
+		
+		Vector3(0, 1, 0),  # Normal for bottomface
+		Vector3(0, 1, 0),
+		Vector3(0, 1, 0),
+		Vector3(0, 1, 0),
+		Vector3(0, 1, 0),
+		Vector3(0, 1, 0)
+	])
+	
+	for i in range(vertices.size()):  # Loop through each vertex in the array
+		vertices[i] = vertices[i] + currentHall.location
 		
 	var indices = PackedInt32Array([0, 1, 2, 3, 4, 5])
 	
@@ -509,13 +588,121 @@ func create_hall_mesh(currentHall: Hallway) -> ArrayMesh:
 	arrays[Mesh.ARRAY_VERTEX] = vertices
 	arrays[Mesh.ARRAY_NORMAL] = normals
 	arrays[Mesh.ARRAY_INDEX] = indices
+	arrays[Mesh.ARRAY_TEX_UV] = uvs  # Assign the UVs array to the mesh
 
 	# Commit the data to the ArrayMesh
 	array_mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays)
 
 	return array_mesh
+
+
+
+
+
+
+
+
+func create_hall_wall_mesh(currentHall: Hallway) -> ArrayMesh:
+	
+	var array_mesh = ArrayMesh.new()
+	
+	var uvs = PackedVector2Array([#adding the uvs for the bottom square:
+		Vector2(0, 0),
+		Vector2(1, 0),
+		Vector2(1, 2),
+		Vector2(0, 0),
+		Vector2(1, 2),
+		Vector2(0, 2),
+		
+		Vector2(0, 0),
+		Vector2(1, 0),
+		Vector2(1, 2),
+		Vector2(0, 0),
+		Vector2(1, 2),
+		Vector2(0, 2)
+	])
 	
 	
+	
+	
+	var squareVerts = PackedVector3Array([
+		Vector3(-.5, 0, -.5),  # back-left
+		Vector3(.5, 0, -.5),   # back-right
+		Vector3(.5, 0, .5),    # front-right
+	
+		Vector3(-.5, 0, -.5),  # back-left
+		Vector3(.5, 0, .5),    # front-right
+		Vector3(-.5, 0, .5)    # front-left
+	])
+	
+	var vertices = PackedVector3Array([])
+	
+	var normals = PackedVector3Array([
+		
+		Vector3(0, 0, 1),  # Normals for first wall (wall is to +x but tex faces -x)
+		Vector3(0, 0, 1),
+		Vector3(0, 0, 1),
+		Vector3(0, 0, 1),
+		Vector3(0, 0, 1),
+		Vector3(0, 0, 1),
+		
+		Vector3(0, 0, 1),  # Normals for second wall (wall is to -x but tex faces +x)
+		Vector3(0, 0, 1),
+		Vector3(0, 0, 1),
+		Vector3(0, 0, 1),
+		Vector3(0, 0, 1),
+		Vector3(0, 0, 1)
+	])
+	
+	#make two 1x2 walls across from each other (1 unit apart) in the x axis (a wall to x+ and a wall to x-)
+	#if the direction is 2 then rotate the model 90 degrees
+	
+	#this is the right face
+	for square_vert in squareVerts:
+		var rotation_matrix = Basis().rotated(Vector3(1, 0, 0), deg_to_rad(-90))
+		square_vert = rotation_matrix * square_vert
+		square_vert.y *= 2
+		square_vert.y += 1
+		rotation_matrix = Basis().rotated(Vector3(0,1,0), deg_to_rad(-90))
+		square_vert = rotation_matrix * square_vert
+		square_vert.x -= .5
+		vertices.append(square_vert)
+	
+	#this is the left face
+	for square_vert in squareVerts:
+		var rotation_matrix = Basis().rotated(Vector3(1, 0, 0), deg_to_rad(-90))
+		square_vert = rotation_matrix * square_vert
+		square_vert.y *= 2
+		square_vert.y += 1
+		rotation_matrix = Basis().rotated(Vector3(0,1,0), deg_to_rad(90))
+		square_vert = rotation_matrix * square_vert
+		square_vert.x += .5
+		vertices.append(square_vert)
+	
+	
+	var dir2_rotation_matrix = Basis().rotated(Vector3(0, 1, 0), deg_to_rad(90))
+	for i in range(vertices.size()):  # Loop through each vertex in the array
+		if(currentHall.dir == 2):
+			vertices[i]= vertices[i] * dir2_rotation_matrix
+		vertices[i] = vertices[i] + currentHall.location
+	
+	var indices = PackedInt32Array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11])
+	
+	# Create an array of arrays for the vertex attributes
+	var arrays = Array()
+
+	# Assign vertices, normals, and indices
+	arrays.resize(Mesh.ARRAY_MAX)
+	arrays[Mesh.ARRAY_VERTEX] = vertices
+	arrays[Mesh.ARRAY_NORMAL] = normals
+	arrays[Mesh.ARRAY_INDEX] = indices
+	arrays[Mesh.ARRAY_TEX_UV] = uvs  # Assign the UVs array to the mesh
+
+	# Commit the data to the ArrayMesh
+	array_mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays)
+	
+	return array_mesh
+	#=======================================================================
 
 func create_custom_floor_mesh(currentRoom: Room) -> ArrayMesh:
 	var textureOption = 2
@@ -694,7 +881,7 @@ func create_custom_wall_mesh3(currentRoom: Room) -> ArrayMesh:
 		Vector3(-.5,3,0),#16
 		Vector3(.5,3,0)#17
 	])#the verts used for the door (ones to not scale): 2,3,5,6,7,10
-	var doorWallIndices: Array[int] = [0,1,2, 3,4,5, 6,7,8, 9,10,11, 12,13,14, 15,16,17]
+	var doorWallIndices: Array[int] = [0,1,2, 3,5,4, 6,7,8, 9,11,10, 12,13,14, 15,16,17]
 	var doorIndices: Array[int] = [2,3,5,6,7,10]
 	#--------------------------------------------------------------
 	
@@ -702,17 +889,31 @@ func create_custom_wall_mesh3(currentRoom: Room) -> ArrayMesh:
 	#-----Wall 1--Z Pos-----------------------------------------------------------------------------------------------
 	# this is the front face
 	if currentRoom.zPlusSlotOccupied:
+	
 		for i in range(doorWallVerts.size()):
-			var rotation_matrix = Basis().rotated(Vector3(0, 1, 0), deg_to_rad(180))#front face
-			var rotated_vert = rotation_matrix * doorWallVerts[i]
-			if i not in doorIndices:#scaling all verts except door ones
-				rotated_vert = Vector3(rotated_vert.x * currentRoom.xWidth, rotated_vert.y, rotated_vert.z * currentRoom.zDepth)
 			
-			vertices.append(Vector3(rotated_vert.x, rotated_vert.y, rotated_vert.z+(float(currentRoom.zDepth)/2)))
-			normals.append(Vector3(0, 0, -1))
-			uvs.append(Vector2(0,0))
+			var currentVert = doorWallVerts[i]
+			#this part does the math for the UVs:
+			currentVert.x += .5 #makes the model's lower left start at origin
+			if i in [2, 3, 4, 6, 7, 11]: #if it is a door vert
+				currentVert.x += (currentRoom.xWidth/2.0) - .5
+			if i in [8,9,10,14,15,17]:
+				currentVert.x += (currentRoom.xWidth) - 1
+			uvs.append(Vector2(currentVert.x/3.0,currentVert.y/3.0))#sets the UVs
+			#now we rotate the model
+			#now we move the wall model so its center is at room center
+			currentVert.x -= currentRoom.xWidth/2.0
+			#its at the room center now so we rotate it to face the right way
+			var rotation_matrix = Basis().rotated(Vector3(0, 1, 0), deg_to_rad(180))#front face
+			currentVert = rotation_matrix * currentVert
+			#now we move the wall into place
+			currentVert.z += currentRoom.zDepth/2.0
+			vertices.append(currentVert)
+			normals.append(Vector3(0,0,-1))
 			indices.append(doorWallIndices[i]+index_count)
 		index_count += doorWallIndices.size()
+			
+			
 			
 	else:
 		for j in range(squareVerts.size()):
@@ -734,7 +935,34 @@ func create_custom_wall_mesh3(currentRoom: Room) -> ArrayMesh:
 	
 	#-------------Wall 2------X Pos-------------------------------------------------------------------------------
 	if currentRoom.xPlusSlotOccupied:
-		pass
+		
+		for i in range(doorWallVerts.size()):
+			
+			var currentVert = doorWallVerts[i]
+			#this part does the math for the UVs:
+			currentVert.x += .5 #makes the model's lower left start at origin
+			if i in [2, 3, 4, 6, 7, 11]: #if it is a door vert
+				currentVert.x += (currentRoom.zDepth/2.0) - .5
+			if i in [8,9,10,14,15,17]:
+				currentVert.x += (currentRoom.zDepth) - 1
+			uvs.append(Vector2(currentVert.x/3.0,currentVert.y/3.0))#sets the UVs
+			#now we rotate the model
+			#now we move the wall model so its center is at room center
+			currentVert.x -= currentRoom.zDepth/2.0
+			#its at the room center now so we rotate it to face the right way
+			var rotation_matrix = Basis().rotated(Vector3(0, 1, 0), deg_to_rad(-90))
+			currentVert = rotation_matrix * currentVert
+			#now we move the wall into place
+			currentVert.x += currentRoom.xWidth/2.0
+			vertices.append(currentVert)
+			normals.append(Vector3(0,0,-1))
+			indices.append(doorWallIndices[i]+index_count)
+		index_count += doorWallIndices.size()
+		
+		
+		
+		
+		
 	else:
 		for j in range(squareVerts.size()):
 			var rotation_matrix = Basis().rotated(Vector3(1, 0, 0), deg_to_rad(-90))#right face
@@ -755,7 +983,35 @@ func create_custom_wall_mesh3(currentRoom: Room) -> ArrayMesh:
 	
 	#-------------Wall 3------Z Min-------------------------------------------------------------------------------
 	if currentRoom.zMinusSlotOccupied:
-		pass
+		
+		for i in range(doorWallVerts.size()):
+			
+			var currentVert = doorWallVerts[i]
+			#this part does the math for the UVs:
+			currentVert.x += .5 #makes the model's lower left start at origin
+			if i in [2, 3, 4, 6, 7, 11]: #if it is a door vert
+				currentVert.x += (currentRoom.xWidth/2.0) - .5
+			if i in [8,9,10,14,15,17]:
+				currentVert.x += (currentRoom.xWidth) - 1
+			uvs.append(Vector2(currentVert.x/3.0,currentVert.y/3.0))#sets the UVs
+			#now we move the wall model so its center is at room center
+			currentVert.x -= currentRoom.xWidth/2.0
+			#its at the room center now so we rotate it to face the right way
+			#this is the only wall that does not need rotation
+			#var rotation_matrix = Basis().rotated(Vector3(0, 1, 0), deg_to_rad(180))#front face
+			#currentVert = rotation_matrix * currentVert
+			#now we move the wall into place
+			currentVert.z -= currentRoom.zDepth/2.0
+			vertices.append(currentVert)
+			normals.append(Vector3(0,0,-1))
+			indices.append(doorWallIndices[i]+index_count)
+		index_count += doorWallIndices.size()
+		
+		
+		
+		
+		
+		
 	else:
 		for j in range(squareVerts.size()):
 			var rotation_matrix = Basis().rotated(Vector3(1, 0, 0), deg_to_rad(-90))#back face
@@ -775,7 +1031,31 @@ func create_custom_wall_mesh3(currentRoom: Room) -> ArrayMesh:
 	
 	#-------------Wall 4------X Min-------------------------------------------------------------------------------
 	if currentRoom.xMinusSlotOccupied:
-		pass
+		
+		for i in range(doorWallVerts.size()):
+			
+			var currentVert = doorWallVerts[i]
+			#this part does the math for the UVs:
+			currentVert.x += .5 #makes the model's lower left start at origin
+			if i in [2, 3, 4, 6, 7, 11]: #if it is a door vert
+				currentVert.x += (currentRoom.zDepth/2.0) - .5
+			if i in [8,9,10,14,15,17]:
+				currentVert.x += (currentRoom.zDepth) - 1
+			uvs.append(Vector2(currentVert.x/3.0,currentVert.y/3.0))#sets the UVs
+			#now we rotate the model
+			#now we move the wall model so its center is at room center
+			currentVert.x -= currentRoom.zDepth/2.0
+			#its at the room center now so we rotate it to face the right way
+			var rotation_matrix = Basis().rotated(Vector3(0, 1, 0), deg_to_rad(90))
+			currentVert = rotation_matrix * currentVert
+			#now we move the wall into place
+			currentVert.x -= currentRoom.xWidth/2.0
+			vertices.append(currentVert)
+			normals.append(Vector3(0,0,-1))
+			indices.append(doorWallIndices[i]+index_count)
+		index_count += doorWallIndices.size()
+		
+		
 	else:
 		for j in range(squareVerts.size()):
 			var rotation_matrix = Basis().rotated(Vector3(1, 0, 0), deg_to_rad(-90))#right face
