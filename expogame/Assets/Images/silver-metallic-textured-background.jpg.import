@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bm830c2fi3wkc"
-path.s3tc="res://.godot/imported/stoneFloor.jpg-354c2e4d0082259c0f16aa62e544d68a.s3tc.ctex"
+uid="uid://v6s88ama1tq"
+path.s3tc="res://.godot/imported/silver-metallic-textured-background.jpg-c8e3a9f86a44b98c4e1249e7ef22ef30.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://Assets/textures/stoneFloor.jpg"
-dest_files=["res://.godot/imported/stoneFloor.jpg-354c2e4d0082259c0f16aa62e544d68a.s3tc.ctex"]
+source_file="res://Assets/Images/silver-metallic-textured-background.jpg"
+dest_files=["res://.godot/imported/silver-metallic-textured-background.jpg-c8e3a9f86a44b98c4e1249e7ef22ef30.s3tc.ctex"]
 
 [params]
 
