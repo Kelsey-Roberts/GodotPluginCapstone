@@ -314,6 +314,7 @@ func generate_furniture(room: Room):
 		furn.furnNum = i
 		furn.furnID = rng.randi_range(1,10) # Find furniture ID
 		furn.direction= rng.randi_range(1,4) # Find direction furniture faces
+		furn.coord = Vector3(0,0,0)
 		for attempt in 5:
 			var tempCoord = Vector3(rng.randi_range(-0.5 * (room.xWidth - 1), 0.5 * (room.xWidth - 1)), 0, rng.randi_range(-0.5 * (room.zDepth - 1), 0.5 * (room.zDepth - 1)))
 			if !room.furnCoords.has(tempCoord):
