@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://bdhrqw85we5rk"
+path="res://.godot/imported/untitled.obj-71fc0d00c2ebf612e2549f718d06f7f1.mesh"
+
+[deps]
+
+files=["res://.godot/imported/untitled.obj-71fc0d00c2ebf612e2549f718d06f7f1.mesh"]
+
+source_file="res://addons/procedural_room_generator/Assets/untitled.obj"
+dest_files=["res://.godot/imported/untitled.obj-71fc0d00c2ebf612e2549f718d06f7f1.mesh", "res://.godot/imported/untitled.obj-71fc0d00c2ebf612e2549f718d06f7f1.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

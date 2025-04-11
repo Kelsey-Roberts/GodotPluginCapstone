@@ -341,7 +341,7 @@ func generate_furniture(room: Room):
 func load_furniture_assets():
 	# Get all files in the Assets/furniture folder
 	print("Attempting to open res://Assets/furniture/ directory...")
-	var dir = DirAccess.open("res://addons/procedural_room_generator/Assets/furniture/")
+	var dir = DirAccess.open("res://addons/procedural_room_generator/Assets/Furniture/")
 	if dir == null:
 		print("Failed to open directory: res://Assets/furniture/")
 		return
@@ -355,7 +355,7 @@ func load_furniture_assets():
 	while file_name != "":
 		print("Found file: ", file_name)
 		# Try loading the file (without filtering by extension)
-		var scene_path = "res://Assets/furniture/" + file_name
+		var scene_path = "res://addons/procedural_room_generator/Assets/Furniture/" + file_name
 		var scene = load(scene_path)  # Load the scene
 
 		# Debugging the scene loading process
@@ -463,8 +463,8 @@ func generate_room3(currentRoom: Room) -> void:
 	var room_floor_mesh = MeshInstance3D.new()
 	room_floor_mesh.mesh = create_custom_floor_mesh(currentRoom)
 	
-	var floorTexture = load("res://assets/textures/stoneFloor.jpg")
-	var wallTexture = load("res://assets/textures/stoneBrickWall.jpg")
+	var floorTexture = load("res://addons/procedural_room_generator/Assets/textures/stoneFloor.jpg")
+	var wallTexture = load("res://addons/procedural_room_generator/Assets/textures/stoneBrickWall.jpg")
 	
 	var floorMaterial = StandardMaterial3D.new()
 	floorMaterial.albedo_texture = floorTexture
@@ -481,6 +481,7 @@ func generate_room3(currentRoom: Room) -> void:
 	room.add_child(room_wall_mesh)
 	
 	room.owner = current_scene
+	currentRoom.roomNode = room
 	room_floor_mesh.owner = current_scene
 	room_wall_mesh.owner = current_scene
 	room_wall_mesh.create_trimesh_collision()
@@ -536,7 +537,7 @@ func generate_hallway(currentHall: Hallway) -> void:
 	hall.add_child(hall_ceiling_mesh)
 	
 	
-	var hallTexture = load("res://assets/textures/hallTexture.jpg")
+	var hallTexture = load("res://addons/procedural_room_generator/Assets/textures/hallTexture.jpg")
 	var hallMaterial = StandardMaterial3D.new()
 	hallMaterial.albedo_texture = hallTexture
 	
