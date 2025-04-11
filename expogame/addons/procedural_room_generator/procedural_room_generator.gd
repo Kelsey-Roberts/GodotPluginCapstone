@@ -35,6 +35,7 @@ class Room:
 	var location: Vector3
 	var direction: int
 	var roomNode: Node3D
+	var furnCoords: Dictionary = {} #key: Vector3, value: Furniture
 
 
 
@@ -313,27 +314,33 @@ func generate_furniture(room: Room):
 		furn.furnNum = i
 		furn.furnID = rng.randi_range(1,10) # Find furniture ID
 		furn.direction= rng.randi_range(1,4) # Find direction furniture faces
-		var coords = Vector3(rng.randi_range(-0.5 * room.xWidth, 0.5 * room.xWidth), 0, rng.randi_range(-0.5 * room.zDepth, 0.5 * room.zDepth)) 
+		for attempt in 5:
+			var tempCoord = Vector3(rng.randi_range(-0.5 * (room.xWidth - 1), 0.5 * (room.xWidth - 1)), 0, rng.randi_range(-0.5 * (room.zDepth - 1), 0.5 * (room.zDepth - 1)))
+			if !room.furnCoords.has(tempCoord):
+				furn.coord = tempCoord
+				break
+
+		
 		# TODO Eliminate duplicate coords so furniture doesn't spawn inside 
 			# each other
 		arr.append(furn) # Add furniture to room
 		var packed_scene = furniture_assets[rng.randi_range(0, furniture_assets.size() - 1)]
 		var furn_scene = packed_scene.duplicate()
 		room.roomNode.add_child(furn_scene)
+		
 		furn_scene.global_position = Vector3.ZERO
-		furn_scene.global_position = (coords + room.location)
+		furn_scene.global_position = (furn.coord + room.location)
 		furn_scene.rotation_degrees=Vector3(0,furn.direction * 90, 0)
+		
 		var current_scene = get_tree().edited_scene_root
 		furn_scene.name = "Furniture_" + str(i)
 		furn_scene.owner = current_scene
 		
 		
-		#var chair = load("res://Assets/furniture/Chair.tscn").instantiate()
-		#chair.translate(furn.coord + room.location)
-		#room.roomNode.add_child(chair)
-		
-		
 	return arr
+	
+	
+	
 	
 func load_furniture_assets():
 	# Get all files in the Assets/furniture folder
