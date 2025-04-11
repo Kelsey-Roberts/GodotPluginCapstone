@@ -19,7 +19,7 @@ data = PackedVector3Array(-1.3385, 1.6964, -1.2547, 1.3385, 1.6964, -1.2547, -1.
 [node name="Node3D" type="Node3D"]
 
 [node name="Table" type="MeshInstance3D" parent="."]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0.206378, 0)
+transform = Transform3D(0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, 0, 0.153375, 0)
 mesh = ExtResource("1_thymv")
 surface_material_override/0 = SubResource("StandardMaterial3D_kllq3")
 surface_material_override/1 = SubResource("StandardMaterial3D_roual")
