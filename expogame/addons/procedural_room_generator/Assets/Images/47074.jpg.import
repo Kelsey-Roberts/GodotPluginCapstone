@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c8uj55uvtwnfx"
-path.s3tc="res://.godot/imported/stoneBrickWall.jpg-4d4345a26e9883e90cad2777c56bba21.s3tc.ctex"
+uid="uid://ejnbum8qi57r"
+path.s3tc="res://.godot/imported/47074.jpg-d07e010ded2259705970cba561b72c54.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://assets/textures/stoneBrickWall.jpg"
-dest_files=["res://.godot/imported/stoneBrickWall.jpg-4d4345a26e9883e90cad2777c56bba21.s3tc.ctex"]
+source_file="res://addons/procedural_room_generator/Assets/Images/47074.jpg"
+dest_files=["res://.godot/imported/47074.jpg-d07e010ded2259705970cba561b72c54.s3tc.ctex"]
 
 [params]
 

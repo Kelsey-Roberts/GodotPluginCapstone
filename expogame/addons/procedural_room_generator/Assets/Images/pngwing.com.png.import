@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://v6s88ama1tq"
-path.s3tc="res://.godot/imported/silver-metallic-textured-background.jpg-c8e3a9f86a44b98c4e1249e7ef22ef30.s3tc.ctex"
+uid="uid://eabyhec1r73c"
+path.s3tc="res://.godot/imported/pngwing.com.png-58e12d5ef3fc0c615381564add0af6fd.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://Assets/Images/silver-metallic-textured-background.jpg"
-dest_files=["res://.godot/imported/silver-metallic-textured-background.jpg-c8e3a9f86a44b98c4e1249e7ef22ef30.s3tc.ctex"]
+source_file="res://addons/procedural_room_generator/Assets/Images/pngwing.com.png"
+dest_files=["res://.godot/imported/pngwing.com.png-58e12d5ef3fc0c615381564add0af6fd.s3tc.ctex"]
 
 [params]
 
@@ -20,7 +20,7 @@ compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/hdr_compression=1
-compress/normal_map=0
+compress/normal_map=1
 compress/channel_pack=0
 mipmaps/generate=true
 mipmaps/limit=-1

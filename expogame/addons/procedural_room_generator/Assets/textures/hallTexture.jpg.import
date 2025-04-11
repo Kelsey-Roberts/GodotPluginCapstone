@@ -3,7 +3,7 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bp6j3w7ugyfpl"
-path.s3tc="res://.godot/imported/hallTexture.jpg-58e64479b004a21a76ffd41af35e3466.s3tc.ctex"
+path.s3tc="res://.godot/imported/hallTexture.jpg-7d80ee7211a2cb6c9d6aea6eeb57c1d2.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://assets/textures/hallTexture.jpg"
-dest_files=["res://.godot/imported/hallTexture.jpg-58e64479b004a21a76ffd41af35e3466.s3tc.ctex"]
+source_file="res://addons/procedural_room_generator/Assets/textures/hallTexture.jpg"
+dest_files=["res://.godot/imported/hallTexture.jpg-7d80ee7211a2cb6c9d6aea6eeb57c1d2.s3tc.ctex"]
 
 [params]
 

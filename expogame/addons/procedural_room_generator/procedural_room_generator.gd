@@ -264,7 +264,7 @@ func _on_generate_button_pressed() -> void:
 	#generate_room2("room1", Vector3(0, 0, 0), spawnDir, x_input, y_input, false, false, false, false)
 
 # Delete the Last Generated Room Button
-# Delete one room at a time.
+#  one room at a time.
 func _on_delete_button_pressed() -> void:
 	delete_script.call_deferred("delete_node_by_name", get_tree())
 
@@ -341,7 +341,7 @@ func generate_furniture(room: Room):
 func load_furniture_assets():
 	# Get all files in the Assets/furniture folder
 	print("Attempting to open res://Assets/furniture/ directory...")
-	var dir = DirAccess.open("res://Assets/furniture/")
+	var dir = DirAccess.open("res://addons/procedural_room_generator/Assets/furniture/")
 	if dir == null:
 		print("Failed to open directory: res://Assets/furniture/")
 		return
@@ -476,8 +476,7 @@ func generate_room3(currentRoom: Room) -> void:
 	room_wall_mesh.material_override = wallMaterial
 	
 	var current_scene = get_tree().edited_scene_root
-	var delete_node = get_editor_interface().get_edited_scene_root().get_node_or_null("Delete")
-	delete_node.add_child(room)
+	current_scene.add_child(room)
 	room.add_child(room_floor_mesh)
 	room.add_child(room_wall_mesh)
 	
@@ -546,9 +545,7 @@ func generate_hallway(currentHall: Hallway) -> void:
 	hall_ceiling_mesh.material_override = hallMaterial
 	
 	var current_scene = get_tree().edited_scene_root
-	var delete_node = get_editor_interface().get_edited_scene_root().get_node_or_null("Delete")
-	#current_scene.add_child(hall)
-	delete_node.add_child(hall)
+	current_scene.add_child(hall)
 	hall.owner = current_scene
 	
 	hall_floor_mesh.owner = current_scene

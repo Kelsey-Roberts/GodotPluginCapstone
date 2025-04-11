@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ejnbum8qi57r"
-path.s3tc="res://.godot/imported/47074.jpg-eec3ff4de52bd717c8c8458de80d3ddd.s3tc.ctex"
+uid="uid://cm2xklyedxcqy"
+path.s3tc="res://.godot/imported/metal.png-e75dd360e2d04010480ee49c96e756bd.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://Assets/Images/47074.jpg"
-dest_files=["res://.godot/imported/47074.jpg-eec3ff4de52bd717c8c8458de80d3ddd.s3tc.ctex"]
+source_file="res://addons/procedural_room_generator/Assets/Images/metal.png"
+dest_files=["res://.godot/imported/metal.png-e75dd360e2d04010480ee49c96e756bd.s3tc.ctex"]
 
 [params]
 
