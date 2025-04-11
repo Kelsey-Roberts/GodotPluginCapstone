@@ -1,8 +1,8 @@
 [gd_scene load_steps=8 format=3 uid="uid://28hiudspv3i0"]
 
-[ext_resource type="ArrayMesh" uid="uid://dpqyh21tcim6s" path="res://Addons/procedural_room_generator/Assets/Objects/lamp.obj" id="1_okw7l"]
-[ext_resource type="Texture2D" uid="uid://ejnbum8qi57r" path="res://Addons/procedural_room_generator/Assets/Images/47074.jpg" id="2_glgfx"]
-[ext_resource type="Texture2D" uid="uid://eabyhec1r73c" path="res://Addons/procedural_room_generator/Assets/Images/pngwing.com.png" id="3_kh8le"]
+[ext_resource type="ArrayMesh" uid="uid://dpqyh21tcim6s" path="res://addons/procedural_room_generator/Assets/Objects/lamp.obj" id="1_okw7l"]
+[ext_resource type="Texture2D" uid="uid://ejnbum8qi57r" path="res://addons/procedural_room_generator/Assets/Images/47074.jpg" id="2_glgfx"]
+[ext_resource type="Texture2D" uid="uid://eabyhec1r73c" path="res://addons/procedural_room_generator/Assets/Images/pngwing.com.png" id="3_kh8le"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cfjph"]
 transparency = 1
@@ -24,7 +24,7 @@ data = PackedVector3Array(-0.1099, 2.6777, -0.7773, -0.1099, 0.6777, -1.6564, 0.
 [node name="Node3D" type="Node3D"]
 
 [node name="Lamp_Mesh" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00771523, 0, 0.0194912)
+transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0, 1.1, 0)
 mesh = ExtResource("1_okw7l")
 surface_material_override/0 = SubResource("StandardMaterial3D_cfjph")
 surface_material_override/1 = SubResource("StandardMaterial3D_byto8")

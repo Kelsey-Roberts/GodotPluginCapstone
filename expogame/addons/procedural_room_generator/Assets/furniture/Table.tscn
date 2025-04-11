@@ -1,8 +1,8 @@
 [gd_scene load_steps=7 format=3 uid="uid://cvfwjgjuksqep"]
 
-[ext_resource type="ArrayMesh" uid="uid://cepivio0aaqrm" path="res://Addons/procedural_room_generator/Assets/Objects/table.obj" id="1_thymv"]
-[ext_resource type="Texture2D" uid="uid://v6s88ama1tq" path="res://Addons/procedural_room_generator/Assets/Images/silver-metallic-textured-background.jpg" id="3_sk5tq"]
-[ext_resource type="Texture2D" uid="uid://eabyhec1r73c" path="res://Addons/procedural_room_generator/Assets/Images/pngwing.com.png" id="3_ywxd1"]
+[ext_resource type="ArrayMesh" uid="uid://cepivio0aaqrm" path="res://addons/procedural_room_generator/Assets/Objects/table.obj" id="1_thymv"]
+[ext_resource type="Texture2D" uid="uid://v6s88ama1tq" path="res://addons/procedural_room_generator/Assets/Images/silver-metallic-textured-background.jpg" id="3_sk5tq"]
+[ext_resource type="Texture2D" uid="uid://eabyhec1r73c" path="res://addons/procedural_room_generator/Assets/Images/pngwing.com.png" id="3_ywxd1"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kllq3"]
 cull_mode = 2
@@ -19,6 +19,7 @@ data = PackedVector3Array(-1.3385, 1.6964, -1.2547, 1.3385, 1.6964, -1.2547, -1.
 [node name="Node3D" type="Node3D"]
 
 [node name="Table" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0.206378, 0)
 mesh = ExtResource("1_thymv")
 surface_material_override/0 = SubResource("StandardMaterial3D_kllq3")
 surface_material_override/1 = SubResource("StandardMaterial3D_roual")
