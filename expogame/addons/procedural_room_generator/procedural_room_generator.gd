@@ -158,7 +158,6 @@ func _on_generate_button_pressed() -> void:
 	#---------------------------------------------------------------------------------------------
 	# this is where we create the room relativity data (room positions relative to other rooms)
 	# This accomplishes setting the room locations
-	positionedRoomsArray.append(roomsArray[0])
 	positionedRoomsArray[0].location = Vector3(0,0,0)
 	addRoomToGrid(positionedRoomsArray[0])
 	for i in range(1, roomsArray.size()):
@@ -227,14 +226,12 @@ func _on_generate_button_pressed() -> void:
 					currentRoom.location = Vector3(0,0,0)
 					pass
 				
-		positionedRoomsArray.append(currentRoom)
 	
 	
 	for room in roomsArray:
 		print("Name: ", room.name, ", xWidth: ", room.xWidth, ", zDepth: ", room.zDepth, ", Location: ", room.location, ", Bools: ", 
 			room.zPlusSlotOccupied,room.xPlusSlotOccupied, room.zMinusSlotOccupied, room.xMinusSlotOccupied)
 		
-	
 	# this is where we actually generate the rooms
 	for currentRoom in positionedRoomsArray:
 		generate_room3(currentRoom)# generateRoom2()
