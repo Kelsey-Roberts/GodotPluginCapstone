@@ -1,18 +1,35 @@
-[gd_scene load_steps=8 format=3 uid="uid://28hiudspv3i0"]
+[gd_scene load_steps=14 format=3 uid="uid://28hiudspv3i0"]
 
-[ext_resource type="ArrayMesh" uid="uid://dpqyh21tcim6s" path="res://addons/procedural_room_generator/Assets/Objects/lamp.obj" id="1_okw7l"]
-[ext_resource type="Texture2D" uid="uid://ejnbum8qi57r" path="res://addons/procedural_room_generator/Assets/Images/47074.jpg" id="2_glgfx"]
+[ext_resource type="ArrayMesh" uid="uid://dpqyh21tcim6s" path="res://addons/procedural_room_generator/Assets/Dependencies/Objects/lamp.obj" id="1_okw7l"]
+[ext_resource type="Texture2D" uid="uid://d1vxeuqf6onbj" path="res://addons/procedural_room_generator/Assets/Dependencies/Lamp/Fabric.jpg" id="2_d2pxr"]
+[ext_resource type="Texture2D" uid="uid://bcue0o6dd3wn2" path="res://addons/procedural_room_generator/Assets/Dependencies/Lamp/Wood.jpg" id="2_n86f5"]
+[ext_resource type="Texture2D" uid="uid://b0bbgtoh2qv1t" path="res://addons/procedural_room_generator/Assets/Dependencies/Lamp/Fabric_AmbientOcclusion.jpg" id="3_0luq8"]
 [ext_resource type="Texture2D" uid="uid://eabyhec1r73c" path="res://addons/procedural_room_generator/Assets/Images/pngwing.com.png" id="3_kh8le"]
+[ext_resource type="Texture2D" uid="uid://ds7tjd2iiohw1" path="res://addons/procedural_room_generator/Assets/Dependencies/Lamp/Wood_NormalDX.jpg" id="3_wbamk"]
+[ext_resource type="Texture2D" uid="uid://cwjuehflyw8iy" path="res://addons/procedural_room_generator/Assets/Dependencies/Lamp/Wood_Roughness.jpg" id="4_7hcnc"]
+[ext_resource type="Texture2D" uid="uid://biilspqnqldtx" path="res://addons/procedural_room_generator/Assets/Dependencies/Lamp/Fabric_NormalDX.jpg" id="4_g55kr"]
+[ext_resource type="Texture2D" uid="uid://d0usdqi5qlhhu" path="res://addons/procedural_room_generator/Assets/Dependencies/Lamp/Fabric_Roughness.jpg" id="5_phjii"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cfjph"]
-transparency = 1
 blend_mode = 1
 cull_mode = 2
 albedo_color = Color(0.849733, 0.801613, 0.630267, 1)
+albedo_texture = ExtResource("2_d2pxr")
+roughness_texture = ExtResource("5_phjii")
+normal_enabled = true
+normal_texture = ExtResource("4_g55kr")
+ao_enabled = true
+ao_light_affect = 0.52
+ao_texture = ExtResource("3_0luq8")
+uv1_scale = Vector3(2, 2, 2)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_byto8"]
 cull_mode = 2
-albedo_texture = ExtResource("2_glgfx")
+albedo_texture = ExtResource("2_n86f5")
+roughness_texture = ExtResource("4_7hcnc")
+normal_enabled = true
+normal_scale = 0.05
+normal_texture = ExtResource("3_wbamk")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7dk3p"]
 albedo_color = Color(0.352313, 0.311363, 0.200746, 1)

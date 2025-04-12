@@ -1,0 +1,69 @@
+[gd_scene load_steps=15 format=3 uid="uid://3q0yn30y4kq1"]
+
+[ext_resource type="ArrayMesh" uid="uid://8le1i8xd2ktr" path="res://addons/procedural_room_generator/Assets/Dependencies/Objects/wall_lamp.obj" id="1_1hhej"]
+[ext_resource type="Texture2D" uid="uid://mr6n20s5h5eb" path="res://addons/procedural_room_generator/Assets/Dependencies/WallLamp/Metal.jpg" id="2_dnpe8"]
+[ext_resource type="Texture2D" uid="uid://tejrbeb4njnf" path="res://addons/procedural_room_generator/Assets/Dependencies/WallLamp/Metal_Displacement.jpg" id="3_lk7tl"]
+[ext_resource type="Texture2D" uid="uid://ovwbwcy34l2y" path="res://addons/procedural_room_generator/Assets/Dependencies/WallLamp/Metal_Metalness.jpg" id="4_mrs1y"]
+[ext_resource type="Texture2D" uid="uid://cqdpkranuy5yo" path="res://addons/procedural_room_generator/Assets/Dependencies/WallLamp/Metal_NormalDX.jpg" id="5_eua78"]
+[ext_resource type="Texture2D" uid="uid://byg5wterbt7f0" path="res://addons/procedural_room_generator/Assets/Dependencies/WallLamp/Metal_Roughness.jpg" id="6_4o4o7"]
+[ext_resource type="Texture2D" uid="uid://bvjy0pxk63vcm" path="res://addons/procedural_room_generator/Assets/Dependencies/WallLamp/Wood.jpg" id="7_nt05o"]
+[ext_resource type="Texture2D" uid="uid://dopvx3x5xe5ho" path="res://addons/procedural_room_generator/Assets/Dependencies/WallLamp/Wood_NormalGL.jpg" id="8_h48cq"]
+[ext_resource type="Texture2D" uid="uid://cykao7en6hwyy" path="res://addons/procedural_room_generator/Assets/Dependencies/WallLamp/Wood_Roughness.jpg" id="9_xewbt"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_v5aa1"]
+cull_mode = 2
+albedo_color = Color(0.43134, 0.43134, 0.43134, 1)
+albedo_texture = ExtResource("2_dnpe8")
+metallic = 1.0
+metallic_specular = 0.44
+metallic_texture = ExtResource("4_mrs1y")
+roughness_texture = ExtResource("6_4o4o7")
+normal_enabled = true
+normal_scale = 7.19
+normal_texture = ExtResource("5_eua78")
+heightmap_enabled = true
+heightmap_texture = ExtResource("3_lk7tl")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hfk1e"]
+blend_mode = 1
+cull_mode = 2
+albedo_color = Color(0.85098, 0.8, 0.631373, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rhnaf"]
+blend_mode = 1
+cull_mode = 2
+albedo_color = Color(0.85098, 0.8, 0.631373, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vxwsf"]
+transparency = 2
+alpha_scissor_threshold = 0.5
+alpha_antialiasing_mode = 0
+cull_mode = 2
+albedo_color = Color(0.989797, 1, 0.604981, 1)
+albedo_texture = ExtResource("2_dnpe8")
+metallic_texture = ExtResource("4_mrs1y")
+roughness_texture = ExtResource("6_4o4o7")
+normal_enabled = true
+normal_texture = ExtResource("5_eua78")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kdama"]
+albedo_color = Color(0.864699, 0.677756, 0.464622, 1)
+albedo_texture = ExtResource("7_nt05o")
+roughness_texture = ExtResource("9_xewbt")
+normal_enabled = true
+normal_texture = ExtResource("8_h48cq")
+
+[node name="Node3D" type="Node3D"]
+
+[node name="WallLamp" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, 0, 2.1, 0)
+mesh = ExtResource("1_1hhej")
+surface_material_override/0 = SubResource("StandardMaterial3D_v5aa1")
+surface_material_override/1 = SubResource("StandardMaterial3D_hfk1e")
+surface_material_override/2 = SubResource("StandardMaterial3D_rhnaf")
+surface_material_override/3 = SubResource("StandardMaterial3D_vxwsf")
+surface_material_override/4 = SubResource("StandardMaterial3D_kdama")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="WallLamp"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.09133, 1.28988, 0)
+light_energy = 3.0

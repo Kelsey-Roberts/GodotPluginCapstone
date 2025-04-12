@@ -67,6 +67,13 @@ var input: GUI_Input # Global container for user input
 # Create a RandomNumberGenerator instance
 var rng: RandomNumberGenerator = RandomNumberGenerator.new() 
 var furniture_assets: Array = []
+var dropdown: OptionButton = OptionButton.new()
+
+var ScriptPath: String = "res://addons/procedural_room_generator/"
+var TextPath: String = "res://addons/procedural_room_generator/Assets/Textures/"
+var ThemeName: String
+var FurnPath: String = "res://addons/procedural_room_generator/Assets/Furniture/"
+var ImagePath: String = "res://addons/procedural_room_generator/Assets/Images/"
 
 #-------------------------------------------------------------------------------
 	# Grid Functions
@@ -120,15 +127,36 @@ func _enter_tree() -> void:
 	var delete_all_button = dock.get_node("ControlsVContainer/DeleteAllButtonPanel/DeleteAll_Button")
 	delete_button.pressed.connect(_on_delete_all_button_pressed)
 	rng.randomize()  # Seed the generator (optional)
+	
+	dropdown = dock.get_node("ControlsVContainer/Themes")
+	fill_drop()
+
+#Populates Dropdown with Themes in the Textures Folder
+func fill_drop() -> void:
+	var dir = DirAccess.open(TextPath)
+	if dir:
+		dir.list_dir_begin()
+		var file = dir.get_next()
+		while file != "":
+			print(file)
+			if dir.current_is_dir() and file != "." and file != "..":
+				dropdown.add_item(file)
+			file = dir.get_next()
+		dir.list_dir_end()
+	else :
+		push_error("Failed to open: %s" % FurnPath)
 
 # Clean-up of the plugin goes here.
 func _exit_tree() -> void:
 	remove_control_from_docks(dock)
 	dock.free()
 
+	
 # Generate Rooms Button
 # Room generation function
 func _on_generate_button_pressed() -> void:
+	ThemeName = dropdown.get_item_text(dropdown.selected) + "/"
+	
 	grid.clear()
 	input = GUI_Input.new() # Create new parameters
 	load_input() # Load parameters
@@ -278,16 +306,17 @@ func load_input() -> void:
 	input.numRooms = dock.get_node("ControlsVContainer/RoomCountPanel/HBoxContainer/RoomCount_SpinBox").value
 	if input.numRooms == 0 : # If 0, generate between 3-20 rooms
 		input.numRooms = randomized_input()
-	input.minWidth = dock.get_node("ControlsVContainer/RoomDimensionsPanel/Room_Dimensions/HBoxContainerWidth/WidthMin_SpinBox").value
+	var path = "ControlsVContainer/RoomDimensionsPanel/Room_Dimensions/"
+	input.minWidth = dock.get_node(path + "HBoxContainerWidth/WidthMin_SpinBox").value
 	if input.minWidth == 0 : # If 0, generate between 3-20 units
 		input.minWidth = randomized_input()
-	input.maxWidth = dock.get_node("ControlsVContainer/RoomDimensionsPanel/Room_Dimensions/HBoxContainerWidth/WidthMax_SpinBox").value
+	input.maxWidth = dock.get_node(path + "HBoxContainerWidth/WidthMax_SpinBox").value
 	if input.maxWidth == 0 : # If 0, generate between 3-20 units
 		input.maxWidth = randomized_input()
-	input.minDepth = dock.get_node("ControlsVContainer/RoomDimensionsPanel/Room_Dimensions/HBoxContainerDepth/DepthMin_SpinBox").value
+	input.minDepth = dock.get_node(path + "HBoxContainerDepth/DepthMin_SpinBox").value
 	if input.minDepth == 0 : # If 0, generate between 3-20 units
 		input.minDepth = randomized_input()
-	input.maxDepth = dock.get_node("ControlsVContainer/RoomDimensionsPanel/Room_Dimensions/HBoxContainerDepth/DepthMax_SpinBox").value
+	input.maxDepth = dock.get_node(path + "HBoxContainerDepth/DepthMax_SpinBox").value
 	if input.maxDepth == 0 : # If 0, generate between 3-20 units
 		input.maxDepth = randomized_input()
 	input.numFurn = 0
@@ -346,7 +375,7 @@ func generate_furniture(room: Room):
 func load_furniture_assets():
 	# Get all files in the Assets/furniture folder
 	print("Attempting to open res://Assets/furniture/ directory...")
-	var dir = DirAccess.open("res://addons/procedural_room_generator/Assets/Furniture/")
+	var dir = DirAccess.open(FurnPath)
 	if dir == null:
 		print("Failed to open directory: res://Assets/furniture/")
 		return
@@ -360,7 +389,7 @@ func load_furniture_assets():
 	while file_name != "":
 		print("Found file: ", file_name)
 		# Try loading the file (without filtering by extension)
-		var scene_path = "res://addons/procedural_room_generator/Assets/Furniture/" + file_name
+		var scene_path = FurnPath + file_name
 		var scene = load(scene_path)  # Load the scene
 
 		# Debugging the scene loading process
@@ -468,8 +497,8 @@ func generate_room3(currentRoom: Room) -> void:
 	var room_floor_mesh = MeshInstance3D.new()
 	room_floor_mesh.mesh = create_custom_floor_mesh(currentRoom)
 	
-	var floorTexture = load("res://addons/procedural_room_generator/Assets/textures/stoneFloor.jpg")
-	var wallTexture = load("res://addons/procedural_room_generator/Assets/textures/stoneBrickWall.jpg")
+	var floorTexture = load(TextPath+ ThemeName + "floor.jpg")
+	var wallTexture = load(TextPath+ ThemeName + "wall.jpg")
 	
 	var floorMaterial = StandardMaterial3D.new()
 	floorMaterial.albedo_texture = floorTexture
@@ -542,7 +571,7 @@ func generate_hallway(currentHall: Hallway) -> void:
 	hall.add_child(hall_ceiling_mesh)
 	
 	
-	var hallTexture = load("res://addons/procedural_room_generator/Assets/textures/hallTexture.jpg")
+	var hallTexture = load(TextPath + ThemeName + "/hall.jpg")
 	var hallMaterial = StandardMaterial3D.new()
 	hallMaterial.albedo_texture = hallTexture
 	
