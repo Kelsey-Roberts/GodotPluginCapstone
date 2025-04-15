@@ -1,11 +1,13 @@
-[gd_scene load_steps=6 format=3 uid="uid://uy3g8g648f76"]
+[gd_scene load_steps=7 format=3 uid="uid://uy3g8g648f76"]
 
-[ext_resource type="Texture2D" uid="uid://ejnbum8qi57r" path="res://addons/procedural_room_generator/Assets/Images/47074.jpg" id="1_s21ko"]
-[ext_resource type="ArrayMesh" uid="uid://bl8unetiflkj0" path="res://addons/procedural_room_generator/Assets/Objects/chair.obj" id="2_wcloh"]
+[ext_resource type="Texture2D" uid="uid://dlfp35yol75j4" path="res://addons/procedural_room_generator/Assets/Dependencies/Chair/Wood.jpg" id="1_n7cfp"]
+[ext_resource type="Texture2D" uid="uid://b8ahsghfnxvui" path="res://addons/procedural_room_generator/Assets/Dependencies/Chair/Wood_Roughness.jpg" id="2_f6uyw"]
+[ext_resource type="ArrayMesh" uid="uid://bl8unetiflkj0" path="res://addons/procedural_room_generator/Assets/Dependencies/Objects/chair.obj" id="2_wcloh"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mvurv"]
 cull_mode = 2
-albedo_texture = ExtResource("1_s21ko")
+albedo_texture = ExtResource("1_n7cfp")
+roughness_texture = ExtResource("2_f6uyw")
 
 [sub_resource type="Skin" id="Skin_ktv1u"]
 

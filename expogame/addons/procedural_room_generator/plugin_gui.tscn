@@ -18,8 +18,9 @@ layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_top = -17.0
 offset_right = -752.0
-offset_bottom = -143.0
+offset_bottom = -57.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_stretch_ratio = 0.0
@@ -228,3 +229,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 text = "Delete All Rooms"
+
+[node name="Themes" type="OptionButton" parent="ControlsVContainer"]
+layout_mode = 2

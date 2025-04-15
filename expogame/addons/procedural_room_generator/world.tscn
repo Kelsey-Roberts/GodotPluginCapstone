@@ -9,7 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://cvfwjgjuksqep" path="res://addons/procedural_room_generator/Assets/Furniture/Table.tscn" id="6_i4bau"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_m7lkf"]
-albedo_texture = ExtResource("1_kexuk")
+albedo_texture = ExtResource("1_jcy0d")
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_jcy0d"]
 _surfaces = [{
@@ -28,7 +28,7 @@ _surfaces = [{
 data = PackedVector3Array(-2.5, 0, -5, 2.5, 0, -5, 2.5, 0, 5, -2.5, 0, -5, 2.5, 0, 5, -2.5, 0, 5)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_i4bau"]
-albedo_texture = ExtResource("2_air28")
+albedo_texture = ExtResource("2_ahaii")
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_maea7"]
 _surfaces = [{
