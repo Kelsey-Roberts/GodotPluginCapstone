@@ -49,6 +49,7 @@ class Room:
 class Hallway:
 	var dir: int #1 for north-south, 2 for east-west
 	var location: Vector3
+	var num: int
 	
 	func _init(dir: int, location: Vector3):
 		self.location = location
@@ -155,8 +156,11 @@ func _exit_tree() -> void:
 # Generate Rooms Button
 # Room generation function
 func _on_generate_button_pressed() -> void:
-	ThemeName = dropdown.get_item_text(dropdown.selected) + "/"
-	
+	addNode = Node3D.new()
+	addNode.name = "Rooms Generated" + Time.get_time_string_from_system()
+	var current_scene = get_tree().edited_scene_root
+	current_scene.add_child(addNode)
+	addNode.owner = current_scene
 	grid.clear()
 	input = GUI_Input.new() # Create new parameters
 	load_input() # Load parameters
@@ -266,9 +270,11 @@ func _on_generate_button_pressed() -> void:
 		generate_room3(currentRoom)# generateRoom2()
 		generate_furniture(currentRoom)
 		
-		
+	var i = 1
 	for currentHall in hallwayArray:
+		currentHall.num = i
 		generate_hallway(currentHall)
+		i = i + 1
 		
 	
 	
@@ -277,13 +283,6 @@ func _on_generate_button_pressed() -> void:
 	
 	
 	print("Generate button pressed!")
-	var x_input = 0
-	var y_input = 0
-	var furniture = 0
-	x_input = int((dock.get_node("Controls_VContainer/Room_Dimensions_Panel/Room_Dimensions/HBoxContainer/X_Input")).text)
-	y_input = int((dock.get_node("Controls_VContainer/Room_Dimensions_Panel/Room_Dimensions/HBoxContainer/Y_Input")).text)
-	var roof = bool((dock.get_node("Controls_VContainer/Roof_Panel/Roof/Roof_Toggle_Button")).button_pressed)
-	print((x_input + y_input), y_input, roof)
 	# now call the room generation script here with the above vars!
 	#generate_room(x_input,y_input)
 	#var spawnDir = 0
@@ -510,7 +509,7 @@ func generate_room3(currentRoom: Room) -> void:
 	room_wall_mesh.material_override = wallMaterial
 	
 	var current_scene = get_tree().edited_scene_root
-	current_scene.add_child(room)
+	addNode.add_child(room)
 	room.add_child(room_floor_mesh)
 	room.add_child(room_wall_mesh)
 	
@@ -555,6 +554,7 @@ func generate_room3(currentRoom: Room) -> void:
 	
 func generate_hallway(currentHall: Hallway) -> void:
 	var hall = Node3D.new()
+	hall.name = "Hall " + str(currentHall.num)
 	
 	var hall_floor_mesh = MeshInstance3D.new()
 	hall_floor_mesh.mesh = create_hall_floor_mesh(currentHall)
@@ -580,7 +580,7 @@ func generate_hallway(currentHall: Hallway) -> void:
 	hall_ceiling_mesh.material_override = hallMaterial
 	
 	var current_scene = get_tree().edited_scene_root
-	current_scene.add_child(hall)
+	addNode.add_child(hall)
 	hall.owner = current_scene
 	
 	hall_floor_mesh.owner = current_scene
