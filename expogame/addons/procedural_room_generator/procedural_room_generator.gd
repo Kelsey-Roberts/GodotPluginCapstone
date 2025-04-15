@@ -69,6 +69,7 @@ var input: GUI_Input # Global container for user input
 var rng: RandomNumberGenerator = RandomNumberGenerator.new() 
 var furniture_assets: Array = []
 var dropdown: OptionButton = OptionButton.new()
+var addNode: Node3D
 
 var ScriptPath: String = "res://addons/procedural_room_generator/"
 var TextPath: String = "res://addons/procedural_room_generator/Assets/Textures/"
@@ -125,8 +126,6 @@ func _enter_tree() -> void:
 	var delete_button = dock.get_node("ControlsVContainer/DeleteButtonPanel/Delete_Button")
 	delete_button.pressed.connect(_on_delete_button_pressed)
 	
-	var delete_all_button = dock.get_node("ControlsVContainer/DeleteAllButtonPanel/DeleteAll_Button")
-	delete_button.pressed.connect(_on_delete_all_button_pressed)
 	rng.randomize()  # Seed the generator (optional)
 	
 	dropdown = dock.get_node("ControlsVContainer/Themes")
@@ -156,17 +155,21 @@ func _exit_tree() -> void:
 # Generate Rooms Button
 # Room generation function
 func _on_generate_button_pressed() -> void:
+	ThemeName = dropdown.get_item_text(dropdown.selected) + "/"
 	addNode = Node3D.new()
 	addNode.name = "Rooms Generated" + Time.get_time_string_from_system()
 	var current_scene = get_tree().edited_scene_root
 	current_scene.add_child(addNode)
 	addNode.owner = current_scene
+	
 	grid.clear()
 	input = GUI_Input.new() # Create new parameters
 	load_input() # Load parameters
 	furniture_assets = []
 	load_furniture_assets()
 	# DEBUG
+	var rng: RandomNumberGenerator = RandomNumberGenerator.new()
+	rng.randomize()
 	print("Number of Rooms: ", input.numRooms)
 	var positionedRoomsArray: Array = []
 	# Create all of the room data
@@ -318,11 +321,10 @@ func load_input() -> void:
 	input.maxDepth = dock.get_node(path + "HBoxContainerDepth/DepthMax_SpinBox").value
 	if input.maxDepth == 0 : # If 0, generate between 3-20 units
 		input.maxDepth = randomized_input()
-	input.numFurn = 0
 	if dock.get_node("ControlsVContainer/FurniturePanel/VBoxContainer/Furniture_ToggleButton").button_pressed :
 		input.numFurn = dock.get_node("ControlsVContainer/FurniturePanel/VBoxContainer/HBoxContainer/Ratio_SpinBox").value
-		if input.numFurn == 0 : # If 0, generate between 20-80% of the area covered in furniture
-			input.numFurn = rng.randi_range(20,80)
+		if input.numFurn == 0 : # If 0, generate between 10-40% of the area covered in furniture
+			input.numFurn = rng.randi_range(10,40)
 	input.genRoof = dock.get_node("ControlsVContainer/RoofPanel/Roof_Toggle_Button").button_pressed
 
 # Randomly generates in a range 3-20 for room count and dimensions.
@@ -335,7 +337,8 @@ func randomized_input() -> int:
 # RETURNS array of furniture to be added
 func generate_furniture(room: Room):
 	var area = room.xWidth * room.zDepth # Calculate area
-	var furnCount = 4 # Calculate # of furniture
+	var furnCount = ((float(input.numFurn)/100.0) * float(area)) # Calculate # of furniture
+	print("FurnCount:",furnCount)
 	var arr = [] # Holds all funriture to be added to a room
 	for i in furnCount:
 		var furn = Furniture.new()
