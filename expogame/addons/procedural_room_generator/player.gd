@@ -16,7 +16,6 @@ var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 @onready var actual_head: Node3D = $"../actualHead"
 @onready var actual_camera: Camera3D = $"../actualHead/actualCamera"
 
-
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	# print("Current Camera: ", get_viewport().get_camera_3d())
