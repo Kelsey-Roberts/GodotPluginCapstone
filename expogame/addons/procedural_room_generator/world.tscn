@@ -1,14 +1,16 @@
-[gd_scene load_steps=135 format=4 uid="uid://btuxx32ribxyr"]
+[gd_scene load_steps=137 format=4 uid="uid://btuxx32ribxyr"]
 
+[ext_resource type="Script" uid="uid://mjjxwrnov3iv" path="res://addons/procedural_room_generator/Assets/CoinManager.gd" id="1_maea7"]
 [ext_resource type="Texture2D" uid="uid://6gwngb6nsipw" path="res://addons/procedural_room_generator/Assets/Textures/Dungeon/floor.jpg" id="2_jcy0d"]
 [ext_resource type="Texture2D" uid="uid://dw4xhek4hxk0b" path="res://addons/procedural_room_generator/Assets/Textures/Dungeon/wall.jpg" id="3_ahaii"]
 [ext_resource type="Script" uid="uid://dm5u7158nrsu5" path="res://addons/procedural_room_generator/player.gd" id="4_air28"]
-[ext_resource type="PackedScene" uid="uid://28hiudspv3i0" path="res://addons/procedural_room_generator/Assets/Furniture/Lamp.tscn" id="4_i4bau"]
-[ext_resource type="PackedScene" uid="uid://uy3g8g648f76" path="res://addons/procedural_room_generator/Assets/Furniture/Chair.tscn" id="5_maea7"]
-[ext_resource type="PackedScene" uid="uid://r57mhi5g6oqx" path="res://addons/procedural_room_generator/Assets/Furniture/Washer.tscn" id="6_dpwut"]
-[ext_resource type="PackedScene" uid="uid://cvfwjgjuksqep" path="res://addons/procedural_room_generator/Assets/Furniture/Table.tscn" id="7_jseq2"]
+[ext_resource type="PackedScene" uid="uid://28hiudspv3i0" path="res://addons/procedural_room_generator/Assets/furniture/Lamp.tscn" id="4_i4bau"]
+[ext_resource type="PackedScene" uid="uid://uy3g8g648f76" path="res://addons/procedural_room_generator/Assets/furniture/Chair.tscn" id="5_maea7"]
+[ext_resource type="PackedScene" uid="uid://r57mhi5g6oqx" path="res://addons/procedural_room_generator/Assets/furniture/Washer.tscn" id="6_dpwut"]
+[ext_resource type="PackedScene" uid="uid://cvfwjgjuksqep" path="res://addons/procedural_room_generator/Assets/furniture/Table.tscn" id="7_jseq2"]
 [ext_resource type="Texture2D" uid="uid://dft7xu2tb0a0u" path="res://addons/procedural_room_generator/Assets/Textures/Dungeon/hall.jpg" id="8_lkksi"]
 [ext_resource type="PackedScene" uid="uid://bwv53dgimnetp" path="res://ExpoGame/Ghost.tscn" id="9_ahaii"]
+[ext_resource type="PackedScene" uid="uid://dlh3vs8fh6r70" path="res://addons/procedural_room_generator/Assets/Coin.tscn" id="11_dpwut"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_mibt1"]
 
@@ -854,8 +856,9 @@ _surfaces = [{
 }]
 
 [node name="Node3D" type="Node3D"]
+script = ExtResource("1_maea7")
 
-[node name="Player" type="CharacterBody3D" parent="."]
+[node name="Player" type="CharacterBody3D" parent="." groups=["Player"]]
 transform = Transform3D(0.75, 0, 0, 0, 0.75, 0, 0, 0, 0.75, 0, 1.05707, 0)
 script = ExtResource("4_air28")
 
@@ -1492,3 +1495,15 @@ mesh = SubResource("ArrayMesh_flygi")
 [node name="Ghost" parent="." instance=ExtResource("9_ahaii")]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -0.00527871, 0.00535917, 1.7438)
 speed = 1.0
+
+[node name="Coin" parent="." instance=ExtResource("11_dpwut")]
+transform = Transform3D(0.65, 0, 0, 0, 0.65, 0, 0, 0, 0.65, 1.88191, 0.627488, -0.588954)
+
+[node name="Coin2" parent="." instance=ExtResource("11_dpwut")]
+transform = Transform3D(0.65, 0, 0, 0, 0.65, 0, 0, 0, 0.65, -0.134762, 0.627488, 2.70929)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="CoinLabel" type="Label" parent="CanvasLayer"]
+offset_right = 68.0
+offset_bottom = 45.0
