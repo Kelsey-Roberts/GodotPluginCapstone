@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://bwv53dgimnetp"]
+
+[ext_resource type="Script" uid="uid://cfp363xr7c3xa" path="res://ExpoGame/ghost.gd" id="1_f37e7"]
+[ext_resource type="Texture2D" uid="uid://bosbsmrjmijyk" path="res://ExpoGame/output-onlinepngtools.png" id="1_rknyt"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_rknyt"]
+height = 10.257
+
+[node name="Ghost" type="Node3D"]
+script = ExtResource("1_f37e7")
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 1.9805, 0)
+billboard = 2
+texture = ExtResource("1_rknyt")
+
+[node name="Area3D" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.1202, 0)
+shape = SubResource("CylinderShape3D_rknyt")

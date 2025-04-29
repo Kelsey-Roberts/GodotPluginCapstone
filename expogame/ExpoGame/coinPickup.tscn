@@ -1,0 +1,21 @@
+[gd_scene load_steps=5 format=3 uid="uid://byfpjimusu0sl"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_q1xn1"]
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_q1xn1"]
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_q1xn1"]
+specular_texture = SubResource("PlaceholderTexture2D_q1xn1")
+specular_color = Color(0.955911, 0.447227, 0.462734, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_diynp"]
+metallic = 1.0
+metallic_texture = SubResource("CanvasTexture_q1xn1")
+metallic_texture_channel = 1
+
+[node name="CoinPickup" type="Area3D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(-4.37114e-08, -0.066362, 0, 1, -2.90077e-09, 0, 0, 0, 1, 0, 0.992129, 0)
+mesh = SubResource("CylinderMesh_q1xn1")
+surface_material_override/0 = SubResource("StandardMaterial3D_diynp")
