@@ -1,3 +1,4 @@
+
 extends Area3D
 
 @export var rotation_speed = 90.0  # degrees per second

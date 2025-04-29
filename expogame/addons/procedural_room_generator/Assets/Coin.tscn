@@ -12,7 +12,7 @@ metallic_specular = 1.0
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_d3fgi"]
 
 [node name="Coin" type="Area3D"]
-transform = Transform3D(0.65, 0, 0, 0, 0.65, 0, 0, 0, 0.65, 0, 0, 0)
+transform = Transform3D(-2.84124e-08, -0.65, 0, 0.65, -2.84124e-08, 0, 0, 0, 0.65, 0, 1, 0)
 script = ExtResource("1_qo3o4")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]

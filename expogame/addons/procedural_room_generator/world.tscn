@@ -859,7 +859,7 @@ _surfaces = [{
 script = ExtResource("1_maea7")
 
 [node name="Player" type="CharacterBody3D" parent="." groups=["Player"]]
-transform = Transform3D(0.75, 0, 0, 0, 0.75, 0, 0, 0, 0.75, 0, 1.05707, 0)
+transform = Transform3D(0.75, 0, 0, 0, 0.75, 0, 0, 0, 0.75, 0, 1.05707, 4.62201)
 script = ExtResource("4_air28")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Player"]
@@ -870,12 +870,12 @@ visible = false
 mesh = SubResource("CapsuleMesh_8m62b")
 
 [node name="headTarget" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.71565, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.71565, 4.62201)
 
 [node name="cameraTarget" type="Node3D" parent="headTarget"]
 
 [node name="actualHead" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.71565, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.71565, 4.62201)
 
 [node name="actualCamera" type="Camera3D" parent="actualHead"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.858754, 0)
@@ -908,25 +908,19 @@ mesh = SubResource("ArrayMesh_3cmw1")
 shape = SubResource("ConcavePolygonShape3D_dewcp")
 
 [node name="Furniture_0_0" parent="Rooms Generated17_02_55/room0" instance=ExtResource("4_i4bau")]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, -2)
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -3.23946, 0, -6.04437)
 
 [node name="Furniture_1_0" parent="Rooms Generated17_02_55/room0" instance=ExtResource("5_maea7")]
-transform = Transform3D(1, 0, 1.74846e-07, 0, 1, 0, -1.74846e-07, 0, 1, -2, 0, -6)
-
-[node name="Furniture_2_0" parent="Rooms Generated17_02_55/room0" instance=ExtResource("6_dpwut")]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, -5)
-
-[node name="Furniture_3_0" parent="Rooms Generated17_02_55/room0" instance=ExtResource("6_dpwut")]
-transform = Transform3D(1, 0, 1.74846e-07, 0, 1, 0, -1.74846e-07, 0, 1, -3, 0, -7)
+transform = Transform3D(1, 0, 1.74846e-07, 0, 1, 0, -1.74846e-07, 0, 1, 2.8695, 4.76837e-07, -5.43875)
 
 [node name="Furniture_4_0" parent="Rooms Generated17_02_55/room0" instance=ExtResource("4_i4bau")]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 3, 0, 2)
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 3.50123, 0, -2.35366)
 
 [node name="Furniture_5_0" parent="Rooms Generated17_02_55/room0" instance=ExtResource("7_jseq2")]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 3, 0, -4)
 
 [node name="Furniture_6_0" parent="Rooms Generated17_02_55/room0" instance=ExtResource("4_i4bau")]
-transform = Transform3D(1, 0, 1.74846e-07, 0, 1, 0, -1.74846e-07, 0, 1, 2, 0, 7)
+transform = Transform3D(1, 0, 1.74846e-07, 0, 1, 0, -1.74846e-07, 0, 1, -3.17738, 0, 5.72935)
 
 [node name="room1" type="Node3D" parent="Rooms Generated17_02_55"]
 
@@ -990,7 +984,7 @@ shape = SubResource("ConcavePolygonShape3D_o8t54")
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 13.5, 0, -3)
 
 [node name="Furniture_1_0" parent="Rooms Generated17_02_55/room2" instance=ExtResource("4_i4bau")]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 7.5, 0, 0)
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 6.51184, -0.114598, -5.85209)
 
 [node name="Furniture_2_0" parent="Rooms Generated17_02_55/room2" instance=ExtResource("6_dpwut")]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 13.5, 0, 3)
@@ -999,7 +993,7 @@ transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 13.5, 
 transform = Transform3D(1, 0, 1.74846e-07, 0, 1, 0, -1.74846e-07, 0, 1, 14.5, 0, 2)
 
 [node name="Furniture_4_0" parent="Rooms Generated17_02_55/room2" instance=ExtResource("7_jseq2")]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 10.5, 0, 0)
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 10.5, -2.10412, -4.88722)
 
 [node name="Furniture_5_0" parent="Rooms Generated17_02_55/room2" instance=ExtResource("4_i4bau")]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 11.5, 0, -2)
@@ -1217,7 +1211,7 @@ shape = SubResource("ConcavePolygonShape3D_261pi")
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 3, 0, 44.5)
 
 [node name="Furniture_1_0" parent="Rooms Generated17_02_55/room9" instance=ExtResource("5_maea7")]
-transform = Transform3D(1, 0, 1.74846e-07, 0, 1, 0, -1.74846e-07, 0, 1, 0, 0, 44.5)
+transform = Transform3D(1, 0, 1.74846e-07, 0, 1, 0, -1.74846e-07, 0, 1, -3.11017, 0, 41.3425)
 
 [node name="Furniture_2_0" parent="Rooms Generated17_02_55/room9" instance=ExtResource("4_i4bau")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 2, 0, 44.5)
@@ -1493,17 +1487,28 @@ material_override = SubResource("StandardMaterial3D_lp670")
 mesh = SubResource("ArrayMesh_flygi")
 
 [node name="Ghost" parent="." instance=ExtResource("9_ahaii")]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -0.00527871, 0.00535917, 1.7438)
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -0.267883, 0.00535917, -3.83107)
 speed = 1.0
-
-[node name="Coin" parent="." instance=ExtResource("11_dpwut")]
-transform = Transform3D(0.65, 0, 0, 0, 0.65, 0, 0, 0, 0.65, 1.88191, 0.627488, -0.588954)
-
-[node name="Coin2" parent="." instance=ExtResource("11_dpwut")]
-transform = Transform3D(0.65, 0, 0, 0, 0.65, 0, 0, 0, 0.65, -0.134762, 0.627488, 2.70929)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="CoinLabel" type="Label" parent="CanvasLayer"]
 offset_right = 68.0
 offset_bottom = 45.0
+text = "Coins left to collect: 5
+"
+
+[node name="Coin" parent="." instance=ExtResource("11_dpwut")]
+transform = Transform3D(-2.84124e-08, -0.65, 0, 0.65, -2.84124e-08, 0, 0, 0, 0.65, 10.5094, 1, 0.144685)
+
+[node name="Coin2" parent="." instance=ExtResource("11_dpwut")]
+transform = Transform3D(-2.84124e-08, -0.65, 0, 0.65, -2.84124e-08, 0, 0, 0, 0.65, -0.442939, 1, 0.709353)
+
+[node name="Coin3" parent="." instance=ExtResource("11_dpwut")]
+transform = Transform3D(-2.84124e-08, -0.65, 0, 0.65, -2.84124e-08, 0, 0, 0, 0.65, 9.0215, 1.00001, 16.0446)
+
+[node name="Coin4" parent="." instance=ExtResource("11_dpwut")]
+transform = Transform3D(-2.84124e-08, -0.65, 0, 0.65, -2.84124e-08, 0, 0, 0, 0.65, -0.174857, 1, 46.1012)
+
+[node name="Coin5" parent="." instance=ExtResource("11_dpwut")]
+transform = Transform3D(-2.84124e-08, -0.65, 0, 0.65, -2.84124e-08, 0, 0, 0, 0.65, 8.52782, 1, -11.8201)
