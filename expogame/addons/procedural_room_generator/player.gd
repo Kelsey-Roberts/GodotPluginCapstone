@@ -7,6 +7,7 @@ const SPRINT_SPEED = 9.0
 const JUMP_VELOCITY = 4.5
 const SENSITIVITY = 0.005
 const ACCELERATION = 5.0
+var coin_count = 0
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
@@ -88,3 +89,10 @@ func _physics_process(delta):
 		velocity.z = lerp(velocity.z, direction.z * speed, ACCELERATION * delta * 0.5)
 
 	move_and_slide()
+	
+	
+	
+
+func add_coins(amount: int):
+	coin_count += amount
+	print("Coins: ", coin_count)
