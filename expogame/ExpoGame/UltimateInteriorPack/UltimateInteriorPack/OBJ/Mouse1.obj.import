@@ -1,0 +1,25 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://tjewhu8k52fn"
+path="res://.godot/imported/Mouse1.obj-f151093a11dd8bb136a6acd76b5c1eca.mesh"
+
+[deps]
+
+files=["res://.godot/imported/Mouse1.obj-f151093a11dd8bb136a6acd76b5c1eca.mesh"]
+
+source_file="res://ExpoGame/UltimateInteriorPack/UltimateInteriorPack/OBJ/Mouse1.obj"
+dest_files=["res://.godot/imported/Mouse1.obj-f151093a11dd8bb136a6acd76b5c1eca.mesh", "res://.godot/imported/Mouse1.obj-f151093a11dd8bb136a6acd76b5c1eca.mesh"]
+
+[params]
+
+generate_tangents=true
+generate_lods=true
+generate_shadow_mesh=true
+generate_lightmap_uv2=false
+generate_lightmap_uv2_texel_size=0.2
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+force_disable_mesh_compression=false

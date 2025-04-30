@@ -1,0 +1,25 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://b4nokt0ne7a1v"
+path="res://.godot/imported/WoodArmChair1.obj-ba8a4da5ab5ea8b5274ea33a8d729799.mesh"
+
+[deps]
+
+files=["res://.godot/imported/WoodArmChair1.obj-ba8a4da5ab5ea8b5274ea33a8d729799.mesh"]
+
+source_file="res://ExpoGame/UltimateInteriorPack/UltimateInteriorPack/OBJ/WoodArmChair1.obj"
+dest_files=["res://.godot/imported/WoodArmChair1.obj-ba8a4da5ab5ea8b5274ea33a8d729799.mesh", "res://.godot/imported/WoodArmChair1.obj-ba8a4da5ab5ea8b5274ea33a8d729799.mesh"]
+
+[params]
+
+generate_tangents=true
+generate_lods=true
+generate_shadow_mesh=true
+generate_lightmap_uv2=false
+generate_lightmap_uv2_texel_size=0.2
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+force_disable_mesh_compression=false

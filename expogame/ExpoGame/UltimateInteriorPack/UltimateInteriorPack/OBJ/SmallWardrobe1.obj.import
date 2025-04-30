@@ -1,0 +1,25 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://bwuglu86bxg0k"
+path="res://.godot/imported/SmallWardrobe1.obj-34b1ad55172edf57bd5d89ee2ca8942e.mesh"
+
+[deps]
+
+files=["res://.godot/imported/SmallWardrobe1.obj-34b1ad55172edf57bd5d89ee2ca8942e.mesh"]
+
+source_file="res://ExpoGame/UltimateInteriorPack/UltimateInteriorPack/OBJ/SmallWardrobe1.obj"
+dest_files=["res://.godot/imported/SmallWardrobe1.obj-34b1ad55172edf57bd5d89ee2ca8942e.mesh", "res://.godot/imported/SmallWardrobe1.obj-34b1ad55172edf57bd5d89ee2ca8942e.mesh"]
+
+[params]
+
+generate_tangents=true
+generate_lods=true
+generate_shadow_mesh=true
+generate_lightmap_uv2=false
+generate_lightmap_uv2_texel_size=0.2
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+force_disable_mesh_compression=false

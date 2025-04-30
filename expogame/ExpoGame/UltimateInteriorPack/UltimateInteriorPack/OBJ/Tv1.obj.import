@@ -1,0 +1,25 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://o0nnrl2816en"
+path="res://.godot/imported/Tv1.obj-1436d6f653411694784a86b0d8b676ab.mesh"
+
+[deps]
+
+files=["res://.godot/imported/Tv1.obj-1436d6f653411694784a86b0d8b676ab.mesh"]
+
+source_file="res://ExpoGame/UltimateInteriorPack/UltimateInteriorPack/OBJ/Tv1.obj"
+dest_files=["res://.godot/imported/Tv1.obj-1436d6f653411694784a86b0d8b676ab.mesh", "res://.godot/imported/Tv1.obj-1436d6f653411694784a86b0d8b676ab.mesh"]
+
+[params]
+
+generate_tangents=true
+generate_lods=true
+generate_shadow_mesh=true
+generate_lightmap_uv2=false
+generate_lightmap_uv2_texel_size=0.2
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+force_disable_mesh_compression=false

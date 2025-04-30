@@ -1,4 +1,6 @@
-[gd_scene load_steps=5 format=3 uid="uid://byfpjimusu0sl"]
+[gd_scene load_steps=6 format=3 uid="uid://byfpjimusu0sl"]
+
+[ext_resource type="Script" uid="uid://n0qe7hpw2k3" path="res://ExpoGame/coin_pickup.gd" id="1_diynp"]
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_q1xn1"]
 
@@ -14,6 +16,7 @@ metallic_texture = SubResource("CanvasTexture_q1xn1")
 metallic_texture_channel = 1
 
 [node name="CoinPickup" type="Area3D"]
+script = ExtResource("1_diynp")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(-4.37114e-08, -0.066362, 0, 1, -2.90077e-09, 0, 0, 0, 1, 0, 0.992129, 0)

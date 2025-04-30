@@ -14,3 +14,19 @@ func add_coin():
 
 func game_win():
 	get_tree().change_scene_to_file("res://ExpoGame/GameWin.tscn") 
+
+
+# Pause Menu
+var is_paused := false
+
+func _input(event):
+	if event.is_action_pressed("ui_cancel"):
+		toggle_pause()
+
+func toggle_pause():
+	is_paused = !is_paused
+	get_tree().paused = is_paused
+	$PauseMenu.visible = is_paused
+
+	if is_paused:
+		$PauseMenu/VBoxContainer/Resume.grab_focus()
