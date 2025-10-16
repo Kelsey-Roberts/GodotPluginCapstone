@@ -18,7 +18,7 @@ My software engineering capstone project. My four team members and I designed th
 ## Technologies Used
 
 - **Engine:** Godot  
-- **Language:** GDScript / C# (depending on implementation)  
+- **Language:** GDScript 
 - **Platform:** Desktop / Game development plugin  
 
 ---
