@@ -2,7 +2,7 @@
 
 ![ExpoGame Screenshot](ExpoGame%20Screenshot.png)
 
-ExpoGame is a Godot plugin designed to generate procedural dungeon-crawler environments based on user input. This capstone project was developed by a team of four software engineering students and demonstrates procedural generation, user input handling, and modular game development techniques.
+My software engineering capstone project. My four team members and I designed this plugin for Godot game engine that accepts user input in a form to generate a dungeon-crawler-style videogame environment. It uses procedural generation to create a network of interconnected rooms of various sizes and decorations to be used for game development.
 
 ---
 
