@@ -1,4 +1,4 @@
-# ExpoGame
+# Godot Plugin: Dungeon Crawler Environment Generator
 
 ![ExpoGame Screenshot](ExpoGame%20Screenshot.png)
 
