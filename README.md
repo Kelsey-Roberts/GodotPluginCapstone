@@ -1,6 +1,6 @@
 # ExpoGame
 
-![ExpoGame Screenshot](ExpoGame Screenshot.png)
+![ExpoGame Screenshot](ExpoGame%20Screenshot.png)
 
 ExpoGame is a Godot plugin designed to generate procedural dungeon-crawler environments based on user input. This capstone project was developed by a team of four software engineering students and demonstrates procedural generation, user input handling, and modular game development techniques.
 
